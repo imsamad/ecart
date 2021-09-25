@@ -1,0 +1,10 @@
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
+const Product = require('../models/Product');
+
+// @desc      Get all products
+// @route     GET /api/v1/products
+// @access    Public
+exports.getProducts = asyncHandler(async (req, res, next) => {
+  res.status(200).json(res.advancedResults);
+});

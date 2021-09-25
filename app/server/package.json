@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "set NODE_ENV=production && node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "data:i": "node seeder -i",
+    "data:d": "node seeder -d"
   },
   "author": "Brad Traversy",
   "license": "MIT",
