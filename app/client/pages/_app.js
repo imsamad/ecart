@@ -6,29 +6,43 @@ import Container from '@mui/material/Container';
 import Box from '@mui/system/Box';
 import { CacheProvider } from '@emotion/react';
 import theme from '../components/mui/theme';
-import createEmotionCache from '../components/mui/createEmotionCache';
+import { Provider } from 'react-redux';
 
+import createEmotionCache from '../components/mui/createEmotionCache';
+import { useStore } from '../redux/store';
 import Header from '../components/Header';
-// Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  let store;
+  if (pageProps?.reduxData) {
+    const { reducerName, fieldName } = pageProps.reduxData;
+    const redux = {
+      [reducerName]: {
+        [fieldName]: pageProps.data,
+      },
+    };
+    store = useStore(redux);
+  } else {
+    store = useStore(undefined);
+  }
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>My page</title>
+        <title>e-Cart</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Header />
-        <Box sx={{ mt: 4 }} />
-        <Container fixed>
-          <Component {...pageProps} />
-        </Container>
+        <Provider store={store}>
+          <Header />
+          <Box sx={{ mt: 4 }} />
+          <Container fixed>
+            <Component {...pageProps} />
+          </Container>
+        </Provider>
       </ThemeProvider>
     </CacheProvider>
   );
