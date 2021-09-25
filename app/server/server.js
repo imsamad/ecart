@@ -64,8 +64,7 @@ app.use(cache(300));
 
 // Route files
 // const auth = require('./routes/authRtr');
-const users = require('./routes/usersRtr');
-const products = require('./routes/productsRtr');
+// const users = require('./routes/usersRtr');
 
 // Mount routers
 // app.use('/api/v1/auth', auth);
