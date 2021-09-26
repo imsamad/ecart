@@ -1,11 +1,14 @@
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+  Fab,
+  CardActionArea,
+} from '@mui/material';
 import Link from 'next/link';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { CardMedia, Fab } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { CardActionArea } from '@mui/material';
 
 export default function BasicCard({ product }) {
   return (

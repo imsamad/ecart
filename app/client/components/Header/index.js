@@ -1,12 +1,28 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Button,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
+
+import useUser from '../../lib/useUser';
+import fetchJson from '../../lib/fetchJson';
+import { useRouter } from 'next/router';
+// import { useUICtx } from '../../UICtx';
+
 export default function ButtonAppBar() {
+  // const { login } = useUICtx();
+  const { user, mutateUser } = useUser();
+
+  const router = useRouter();
+  const logout = async () => {
+    mutateUser(await fetchJson({ url: '/api/logout', method: 'POST' }), false);
+    router.push('/login');
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -28,7 +44,27 @@ export default function ButtonAppBar() {
                 </a>
               </Link>
             </Typography>
-            <Button color="inherit">Login</Button>
+            {user?.name ? (
+              <Button
+                onClick={logout}
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  textTransform: 'none',
+                }}
+              >
+                {user.email || 'Logout'}
+              </Button>
+            ) : (
+              <Button color="inherit">
+                <Link href="/login">
+                  <a style={{ textDecoration: 'none', color: 'inherit' }}>
+                    Login
+                  </a>
+                </Link>
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

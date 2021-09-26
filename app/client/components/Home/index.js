@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
+
 import Card from '../ProductCard';
 
 const index = () => {
   const { products } = useSelector((state) => state.productsList);
-  console.log('Home Page');
   return (
     <Grid container spacing={2}>
       {products?.data?.map((product) => (

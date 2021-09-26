@@ -17,7 +17,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     password,
     role,
   });
-
+  /**
   // grab token and send to email
   const confirmEmailToken = user.generateEmailConfirmToken();
 
@@ -35,7 +35,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     subject: 'Email confirmation token',
     message,
   });
-
+ */
   sendTokenResponse(user, 200, res);
 });
 
@@ -43,6 +43,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/auth/login
 // @access    Public
 exports.login = asyncHandler(async (req, res, next) => {
+  // console.log('req.body', req.body);
   const { email, password } = req.body;
 
   // Validate emil & password
@@ -52,18 +53,17 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // Check for user
   const user = await User.findOne({ email }).select('+password');
-
+  // console.log('user found', user);
   if (!user) {
-    return next(new ErrorResponse('Invalid credentials', 401));
+    return next(new ErrorResponse('Invalid Email', 401));
   }
 
   // Check if password matches
   const isMatch = await user.matchPassword(password);
-
   if (!isMatch) {
-    return next(new ErrorResponse('Invalid credentials', 401));
+    return next(new ErrorResponse('Invalid Password', 401));
   }
-
+  user.password = undefined;
   sendTokenResponse(user, 200, res);
 });
 
@@ -256,9 +256,11 @@ const sendTokenResponse = (user, statusCode, res) => {
   if (process.env.NODE_ENV === 'production') {
     options.secure = true;
   }
-
-  res.status(statusCode).cookie('token', token, options).json({
+  // .cookie('token', token, options)
+  res.status(statusCode).json({
     success: true,
     token,
+    name: user.name,
+    email: user.email,
   });
 };

@@ -63,12 +63,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cache(300));
 
 // Route files
-// const auth = require('./routes/authRtr');
+const auth = require('./routes/authRtr');
 // const users = require('./routes/usersRtr');
 const products = require('./routes/productsRtr');
 
 // Mount routers
-// app.use('/api/v1/auth', auth);
+app.use('/api/v1/auth', auth);
 // app.use('/api/v1/users', users);
 app.use('/api/v1/products', products);
 app.get('/', (req, res) => res.json({ msg: 'Yes API is running...' }));
