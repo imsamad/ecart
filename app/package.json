@@ -13,7 +13,7 @@
     "client-start": "cd client &&  npm start",
     "build": "run-s client-build client-start",
     "pro": "concurrently -n 'server,client' -c 'green,blue'  \"npm run server-prod\" \"npm run build\"",
-    "seed": "cd server && npm run data:i",
+    "seed:i": "cd server && npm run data:i",
     "seed:d": "cd server && npm run data:d"
   },
   "keywords": [],

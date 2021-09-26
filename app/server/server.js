@@ -17,9 +17,7 @@ const errorHandler = require('./middleware/error');
 const notFound = require('./middleware/notFound');
 const connectDB = require('./config/db');
 const shouldCompress = require('./utils/shouldCompress');
-
 const app = express();
-
 // Compress all responses
 app.use(compression({ filter: shouldCompress }));
 
@@ -60,18 +58,10 @@ app.use(cors());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 // Do caching...
-app.use(cache(300));
+if (process.env.USE_CACHE === 'true') app.use(cache(300));
 
-// Route files
-const auth = require('./routes/authRtr');
-// const users = require('./routes/usersRtr');
-const products = require('./routes/productsRtr');
-
-// Mount routers
-app.use('/api/v1/auth', auth);
-// app.use('/api/v1/users', users);
-app.use('/api/v1/products', products);
-app.get('/', (req, res) => res.json({ msg: 'Yes API is running...' }));
+const combineRouters = require('./routes/combineRtr');
+app.use(combineRouters);
 app.use(notFound);
 app.use(errorHandler);
 
