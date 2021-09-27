@@ -5,6 +5,7 @@ import {
   Button,
   IconButton,
   Typography,
+  Tooltip,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
@@ -17,7 +18,6 @@ import { useRouter } from 'next/router';
 export default function ButtonAppBar() {
   // const { login } = useUICtx();
   const { user, mutateUser } = useUser();
-
   const router = useRouter();
   const logout = async () => {
     mutateUser(await fetchJson({ url: '/api/logout', method: 'POST' }), false);
@@ -44,18 +44,20 @@ export default function ButtonAppBar() {
                 </a>
               </Link>
             </Typography>
-            {user?.name ? (
-              <Button
-                onClick={logout}
-                style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  textTransform: 'none',
-                }}
-              >
-                {user.email || 'Logout'}
-              </Button>
+            {user && user?.email ? (
+              <Tooltip title="Logout">
+                <Button
+                  onClick={logout}
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    textTransform: 'none',
+                  }}
+                >
+                  {user.email || user.username || 'Logout'}
+                </Button>
+              </Tooltip>
             ) : (
               <Button color="inherit">
                 <Link href="/login">

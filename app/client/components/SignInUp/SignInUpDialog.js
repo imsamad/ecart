@@ -30,14 +30,14 @@ export default function LoginForm({ open, handleClose }) {
             <TextField
               fullWidth
               margin="normal"
-              id="standard-basic"
+              id="name1"
               label="Email"
               variant="standard"
             />
             <TextField
               fullWidth
               margin="normal"
-              id="standard-basic"
+              id="email1"
               label="Password"
               variant="standard"
             />

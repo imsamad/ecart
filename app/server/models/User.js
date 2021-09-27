@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const randomize = require('randomatic');
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: [true, 'Please add a name'],
   },

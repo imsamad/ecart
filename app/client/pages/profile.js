@@ -1,10 +1,10 @@
 import withSession from '../lib/session';
 
-const profile = ({ user: { name, email } }) => {
+const profile = ({ user: { username, email } }) => {
   return (
     <div>
       Profile
-      <h4>Name:- {name}</h4>
+      <h4>Name:- {username}</h4>
       <h4>Email:- {email}</h4>
     </div>
   );
@@ -14,14 +14,14 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
   if (!user) {
     return {
       redirect: {
-        destination: '/login?redirectTo=/profile',
+        destination: '/login?redirectTo=check',
         permanent: false,
       },
     };
   }
-  const { name, email } = req.session.get('user');
+  const { username, email } = req.session.get('user');
   return {
-    props: { user: { name, email } },
+    props: { user: { username, email } },
   };
 });
 export default profile;

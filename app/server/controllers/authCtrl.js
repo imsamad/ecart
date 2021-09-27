@@ -8,14 +8,14 @@ const User = require('../models/User');
 // @route     POST /api/v1/auth/register
 // @access    Public
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role } = req.body;
+  const { username, email, password, role } = req.body;
 
   // Create user
   const user = await User.create({
-    name,
+    username,
     email,
     password,
-    role,
+    role: role ?? 'user',
   });
   /**
   // grab token and send to email
@@ -46,7 +46,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   // console.log('req.body', req.body);
   const { email, password } = req.body;
 
-  // Validate emil & password
+  // Validate email & password
   if (!email || !password) {
     return next(new ErrorResponse('Please provide an email and password', 400));
   }
@@ -100,7 +100,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
-    name: req.body.name,
+    username: req.body.username,
     email: req.body.email,
   };
 
@@ -260,7 +260,7 @@ const sendTokenResponse = (user, statusCode, res) => {
   res.status(statusCode).json({
     success: true,
     token,
-    name: user.name,
+    username: user.username,
     email: user.email,
   });
 };

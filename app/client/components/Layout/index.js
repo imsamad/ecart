@@ -3,9 +3,10 @@ import Container from '@mui/material/Container';
 
 import Header from '../Header';
 // import UIContextProvider from '../../UICtx';
+
 const index = (props) => {
   return (
-    // <UIContextProvider>
+    //  <UIContextProvider>
     <Box sx={{ overflow: 'hidden' }}>
       <Header />
       <Box sx={{ mt: 4 }} />
@@ -13,7 +14,7 @@ const index = (props) => {
         <h1>{props.children}</h1>
       </Container>
     </Box>
-    // </UIContextProvider>
+    //  </UIContextProvider>
   );
 };
 
