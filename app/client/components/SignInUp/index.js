@@ -127,8 +127,9 @@ export default function LoginForm() {
           )}
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ pr: 4, pb: 4 }}>
         <LoadingButton
+          disableElevation
           disabled={formik.isSubmitting}
           loading={formik.isSubmitting}
           loadingPosition="start"

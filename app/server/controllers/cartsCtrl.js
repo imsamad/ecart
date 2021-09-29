@@ -8,7 +8,7 @@ const Product = require('../models/Product');
 // @access    Protect
 exports.createCart = asyncHandler(async (req, res, next) => {
   const {
-    productItem: { productId, qty, increment, decrement },
+    productItem: { productId, qty },
   } = req.body;
   const productExist = await Product.findById(productId);
   const outOfStock = qty > productExist?.countInStock ? true : false;
@@ -54,7 +54,7 @@ exports.createCart = asyncHandler(async (req, res, next) => {
     });
 
     newCart = await newCart.save();
-    return res.json(newCart);
+    return res.json({ cart: newCart });
   }
 });
 
@@ -74,7 +74,7 @@ exports.getCart = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/carts
 // @access    Protect
 exports.removeProduct = asyncHandler(async (req, res, next) => {
-  const { product: productId } = req.body;
+  const { productId } = req.body;
   if (!productId) return next(new ErrorResponse('Provide a product.', 415));
   let carts = await Cart.findOne({
     user: req.user._id,
@@ -90,7 +90,7 @@ exports.removeProduct = asyncHandler(async (req, res, next) => {
   );
 
   await carts.save();
-  return res.json({ success: true, carts });
+  return res.json({ success: true, cart: null });
 });
 
 // @desc      Increment or Decrement Qty of product in cart
@@ -118,7 +118,7 @@ exports.incDecQty = asyncHandler(async (req, res, next) => {
   }
 
   const cartExist = await Cart.findOne({ user: req.user._id, isOrder: false });
-
+  console.log('cartExist', cartExist);
   if (!cartExist) return next(new ErrorResponse('No cart exist...', 415));
 
   const indexOfProduct = cartExist.productItems
@@ -143,16 +143,16 @@ exports.incDecQty = asyncHandler(async (req, res, next) => {
         (item) => item.product.toString() !== productId.toString()
       );
       await cartExist.save();
-      return res.json({ success: true, cartExist });
+      return res.json({ success: true, cart: cartExist });
     }
     cartExist.productItems[indexOfProduct].qty--;
     await cartExist.save();
-    return res.json({ success: true, cartExist });
+    return res.json({ success: true, cart: cartExist });
   }
 
   if (willGoOutOfStock) return next(new ErrorResponse('Out of stock.', 400));
 
   cartExist.productItems[indexOfProduct].qty++;
   await cartExist.save();
-  return res.json({ success: true, cartExist });
+  return res.json({ success: true, cart: cartExist });
 });

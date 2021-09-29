@@ -10,7 +10,7 @@ export const getStaticProps = async () => {
     props: {
       data: products,
       reduxData: {
-        reducerName: 'productsList',
+        reducerName: 'products',
         fieldName: 'products',
       },
     },

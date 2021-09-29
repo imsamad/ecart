@@ -3,13 +3,10 @@ const NodeCache = require('Node-Cache');
 const cache = new NodeCache();
 
 module.exports = (duration) => (req, res, next) => {
-  console.log(
-    'CacheCacheCacheCacheCacheCacheCacheCacheCacheCacheCacheCacheCacheCache'
-  );
   // Not cache parameterised url.
   // if (Object.keys(req.query).length !== 0) return next();
 
-  if (req.method !== 'GET') return next();
+  if (req.method !== 'GET' || req.originalUrl == '/api/v1/carts') return next();
   const key = req.originalUrl;
 
   const cacheResponse = cache.get(key);

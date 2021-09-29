@@ -1,6 +1,0 @@
-modules.exports = [
-  {
-    user: '',
-    address: '',
-  },
-];

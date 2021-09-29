@@ -8,10 +8,10 @@
     "server": "cd server && npm run dev ",
     "client": " cd client  && npm run dev",
     "dev": "concurrently -n 'server,client' -c 'green,blue' \"npm run server\" \"npm run client\"",
-    "server-prod": "cd backend &&  npm start",
+    "server-prod": "cd server &&  npm start",
     "client-build": "cd client &&  npm run build",
     "client-start": "cd client &&  npm start",
-    "build": "run-s client-build client-start",
+    "build": "run-s server-prod client-build client-start",
     "pro": "concurrently -n 'server,client' -c 'green,blue'  \"npm run server-prod\" \"npm run build\"",
     "seed:i": "cd server && npm run data:i",
     "seed:d": "cd server && npm run data:d"
