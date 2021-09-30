@@ -3,7 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
 const User = require('../models/User');
-
+const Address = require('../models/Address');
 // @desc      Register user
 // @route     POST /api/v1/auth/register
 // @access    Public
@@ -87,8 +87,9 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
   // user is already available in req due to the protect middleware
-  const user = req.user;
-
+  let user = req.user;
+  let address = await Address.find({ user: req.user.id });
+  user = { ...user._doc, address };
   res.status(200).json({
     success: true,
     data: user,

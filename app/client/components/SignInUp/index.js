@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 
 import useUser from '../../lib/useUser';
 import loginFun from '../../lib/loginFun';
-import { signInModel, signUpModel } from './FormModel';
+import { signInModel, signUpModel } from '../FormModals/SignInUpFormModel';
 // import { useUICtx } from '../../UICtx';
 export default function LoginForm() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -39,8 +39,10 @@ export default function LoginForm() {
 
   // const { snackBar } = useUICtx();
   const handleSubmit = (values, action) => {
+    // console.log('values', values);
     loginFun(values, action, isSignIn, mutateUser, setHeadError);
   };
+
   const initialValues = isSignIn
     ? signInModel.initialValues
     : signUpModel.initialValues;
@@ -55,12 +57,15 @@ export default function LoginForm() {
     onSubmit: handleSubmit,
     validateOnChange: false,
   });
+
   const formLabel = isSignIn ? 'Sign In' : 'Sign Up';
+
   const switchForm = () => {
     formik.setTouched({});
     formik.setErrors({});
     setIsSignIn(!isSignIn);
   };
+
   return (
     <Paper
       elevation={3}
@@ -144,6 +149,7 @@ export default function LoginForm() {
     </Paper>
   );
 }
+
 const PasswordField = ({ formik }) => {
   const [showPassword, setShowPasword] = useState(false);
   const isError = formik.touched.password && Boolean(formik.errors.password);

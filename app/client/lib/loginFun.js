@@ -38,7 +38,7 @@ const login = async (
     } else if (doHave('Duplicate') || doHave('duplicate')) {
       action.setErrors({ email: 'This email already taken.' });
     } else {
-      setHeadError('Ivalid credential,Try Again...!');
+      setHeadError('Invalid credential,Try Again...!');
     }
   }
 };

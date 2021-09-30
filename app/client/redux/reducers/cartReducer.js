@@ -1,96 +1,75 @@
 import {
-  CART_INIT,
-  CART_REQ,
-  CART_ERR,
-  CART_INCDEC_INT,
-  CART_INCDEC_REQ,
-  CART_INCDEC_ERR,
-  CART_REM_INT,
-  CART_REM_REQ,
-  CART_REM_ERR,
-  CART_ADD_INT,
-  CART_ADD_REQ,
-  CART_ADD_ERR,
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_INC_ITEM,
+  CART_DEC_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+  CART_SAVE_PAYMENT_METHOD,
 } from '../constants/cartConst';
 
-// POST REDUCER
-const cartReducer = (state = { cart: { productItems: [] } }, action) => {
+import initState from '../initialState';
+
+const cartReducer = (state = { ...initState }, action) => {
   const { type, payload } = action;
   switch (type) {
-    case CART_INIT:
-      return { loading: true, ...state };
-    case CART_REQ:
-      return { ...state, loading: false, cart: payload };
-    case CART_ERR:
-      console.log('Error from reducer');
-      return { loading: false, error: true, message: payload };
+    case CART_ADD_ITEM:
+      const item = payload;
 
-    //Add Product
-    case CART_ADD_INT:
-      return { addLoading: true, ...state, addProduct: payload };
-    case CART_ADD_REQ:
-      return { ...state, addLoading: false, addProductStatus: true };
-    case CART_ADD_ERR:
-      console.log('Error from reducer');
+      const existItem = state.cartItems
+        .map((p) => p.product)
+        .indexOf(item.product);
+
+      if (existItem >= 0) {
+        item.qty = state.cartItems[existItem].qty + 1;
+        return {
+          ...state,
+          cartItems: state.cartItems.map((x, index) =>
+            index === existItem ? item : x
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          cartItems: [...state.cartItems, item],
+        };
+      }
+
+    case CART_REMOVE_ITEM:
       return {
-        addLoading: false,
-        addError: true,
-        message: payload,
+        ...state,
+        cartItems: state.cartItems.filter((x) => x.product !== payload),
       };
 
-    // Increment or decrement
-    case CART_INCDEC_INT:
+    case CART_INC_ITEM:
+      const { qty } = action;
+
+      const newCart = state.cartItems.map((x) => {
+        const willGoOutOfStock = x.countInStock < x.qty + qty;
+        if (x.product === payload && !willGoOutOfStock) {
+          x.qty = x.qty + qty;
+        }
+        return x;
+      });
+
       return {
         ...state,
-        incDecLoading: true,
-        incDecProduct: payload,
+        cartItems: newCart,
       };
-    case CART_INCDEC_REQ:
+
+    case CART_DEC_ITEM:
       return {
         ...state,
-        incDecLoading: false,
-        incDecUpdatedQty: payload,
+        cartItems: state.cartItems.map((x) => {
+          if (x.product === payload) {
+            if (Number(x.qty - 1) !== 0) --x.qty;
+          }
+          return x;
+        }),
       };
-    case CART_INCDEC_ERR:
-      return {
-        ...state,
-        incDecLoading: false,
-        message: payload,
-      };
-    //Remove
-    case CART_REM_INT:
-      return {
-        ...state,
-        remLoading: true,
-        remProduct: payload,
-        remIndex: action.index,
-      };
-    case CART_REM_REQ:
-      console.log('Before ', state);
-      let { cart, ...rest } = state;
-      let stateRest = rest;
-      let { productItems, ...last } = cart;
-      let cartRest = last;
-      console.log('before productItems', productItems);
-      console.log('payload', payload);
-      let newProductItems = productItems.filter(
-        (product) => product.product._id !== payload
-      );
-      console.log(' afetr newProductItems', newProductItems);
-      let newCart = { productItems: newProductItems, ...cartRest };
-      let newState = { cart: newCart, ...stateRest };
-      console.log('newState ', newState);
-      return {
-        ...newState,
-        remLoading: false,
-        remStatus: true,
-      };
-    case CART_REM_ERR:
-      return {
-        ...state,
-        remLoading: false,
-        message: payload,
-      };
+    case CART_SAVE_SHIPPING_ADDRESS:
+      return { ...state, shippingAddress: payload };
+    case CART_SAVE_PAYMENT_METHOD:
+      return { ...state, paymentMethod: payload };
 
     default:
       return state;

@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 import AddCartBtn from '../AddCartBtn';
 export default function BasicCard({ product }) {
-  console.log('product from card', product._id);
+  // console.log('product from card', product._id);
   return (
     <Box sx={{ position: 'relative' }}>
       <CardActionArea>
@@ -39,7 +39,10 @@ export default function BasicCard({ product }) {
           </a>
         </Link>
       </CardActionArea>
-      <AddCartBtn product={product._id.toString()} />
+      <AddCartBtn
+        product={product._id.toString()}
+        countInStock={product.countInStock}
+      />
     </Box>
   );
 }

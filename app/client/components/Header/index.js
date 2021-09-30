@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import useUser from '../../lib/useUser';
 import fetchJson from '../../lib/fetchJson';
@@ -44,6 +45,23 @@ export default function ButtonAppBar() {
                 </a>
               </Link>
             </Typography>
+
+            <Link href="/cart">
+              <a>
+                <IconButton
+                  sx={{
+                    border: 2,
+                    borderRadius: 2,
+                    borderColor: 'grey.50',
+                    color: 'grey.50',
+                  }}
+                  size="small"
+                >
+                  <ShoppingCartIcon fontSize="small" />
+                </IconButton>
+              </a>
+            </Link>
+
             {user && user?.email ? (
               <Tooltip title="Logout">
                 <Button

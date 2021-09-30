@@ -16,10 +16,10 @@ export default function useUser({
     }
 
     if (redirectTo && !redirectIfFound && !user?.isLoggedIn) {
-      Router.push(redirectTo);
+      Router.replace(redirectTo);
     }
     if (redirectIfFound && user?.isLoggedIn) {
-      Router.push(redirectTo);
+      Router.replace(redirectTo);
     }
   }, [user, redirectIfFound, redirectTo]);
 

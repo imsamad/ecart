@@ -34,7 +34,7 @@ const UIContextProvider = (props) => {
     setSnackOpen(true);
   };
   const handleSnackClose = (_event, reason) => {
-    console.log('handleSnackClose', handleSnackClose);
+    // console.log('handleSnackClose', handleSnackClose);
     if (reason === 'clickaway') {
       return;
     }

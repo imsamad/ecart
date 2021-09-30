@@ -1,5 +1,5 @@
 const express = require('express');
-const { getProducts } = require('../controllers/productsCtrl');
+const { getProducts, getProduct } = require('../controllers/productsCtrl');
 
 const Product = require('../models/Product');
 
@@ -12,5 +12,6 @@ const advancedResults = require('../middleware/advancedResults');
 // router.use(authorize('admin'));
 
 router.route('/').get(advancedResults(Product), getProducts);
+router.route('/:pid').get(getProduct);
 
 module.exports = router;

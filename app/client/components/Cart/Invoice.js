@@ -5,15 +5,18 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import NextButton from './NextButton';
-function ccyFormat(num) {
-  return `$${num.toFixed(2)}`;
-}
-export default function SpanningTable({ details }) {
+
+export default function SpanningTable({
+  subTotal,
+  total,
+  shippingPrice,
+  taxPrice,
+  fromSelect,
+}) {
   return (
     <TableContainer>
-      <Table aria-label="spanning table">
+      <Table aria-label="spanning tablehrt">
         <TableHead>
           <TableRow>
             <TableCell colSpan={3} align="center">
@@ -25,26 +28,28 @@ export default function SpanningTable({ details }) {
           <TableRow>
             <TableCell colSpan={2}>Subtotal</TableCell>
 
-            <TableCell align="right">{ccyFormat(details.itemsPrice)}</TableCell>
+            <TableCell align="right">{subTotal}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Tax</TableCell>
             <TableCell>7%</TableCell>
-            <TableCell align="right">{details.taxPrice}</TableCell>
+            <TableCell align="right">{taxPrice}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colSpan={2}>Shipping</TableCell>
-            <TableCell align="right"> {details.shippingPrice}</TableCell>
+            <TableCell align="right"> {shippingPrice}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="right"> {details.totalPrice}</TableCell>
+            <TableCell align="right"> {total}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell colSpan={3}>
-              <NextButton />
-            </TableCell>
-          </TableRow>
+          {!fromSelect && (
+            <TableRow>
+              <TableCell colSpan={3}>
+                <NextButton />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

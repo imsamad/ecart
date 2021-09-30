@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { CircularProgress, Fab } from '@mui/material';
+import React from 'react';
+import { Fab } from '@mui/material';
 
-import addProduct from '../../lib/addToCart';
-
+// import addProduct from '../../lib/addToCart';
+import { addProduct } from '../../redux/actions/cartActions';
+import { useDispatch } from 'react-redux';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 const index = ({ product }) => {
-  const [loader, setLoader] = useState(false);
-  const addToCart = () => addProduct(product, setLoader);
+  const dispatch = useDispatch();
+  // const [loader, setLoader] = useState(false);
+  const addToCart = () => dispatch(addProduct(product));
 
   return (
     <Fab
@@ -20,11 +22,12 @@ const index = ({ product }) => {
       aria-label="addtocart"
       onClick={addToCart}
     >
-      {loader ? (
+      <AddShoppingCartIcon fontSize="small" />
+      {/* {loader ? (
         <CircularProgress size={15} sx={{ color: '#fff' }} />
       ) : (
         <AddShoppingCartIcon fontSize="small" />
-      )}
+      )} */}
     </Fab>
   );
 };

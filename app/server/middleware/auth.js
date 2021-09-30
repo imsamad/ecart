@@ -6,6 +6,7 @@ const User = require('../models/User');
 // Protect routes
 exports.protect = (checkIsEmailConfirmed = false) =>
   asyncHandler(async (req, res, next) => {
+    console.log('From protect', req.headers.authorization);
     let token;
     if (
       req.headers.authorization &&

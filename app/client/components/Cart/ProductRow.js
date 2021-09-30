@@ -3,35 +3,41 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Stack from '@mui/material/Stack';
 import Image from 'next/image';
-import { Typography, LinearProgress } from '@mui/material';
-import QtyCounter from './QtyCounter';
+import { Typography } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
+import ccyFmt from '../../lib/ccyFormat';
+import AddIcon from '@mui/icons-material/Add';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteProduct } from '../../redux/actions/cartActions';
+import { useDispatch } from 'react-redux';
+import {
+  increment,
+  decrement,
+  removeProduct,
+} from '../../redux/actions/cartActions';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const ProductRow = ({ product }) => {
-  const { remLoading, remProduct, remStatus } = useSelector(({ cart }) => cart);
-
   const dispatch = useDispatch();
-  const remove = () => dispatch(deleteProduct(product.product._id));
-  const isThisRow = remProduct === product.product._id;
-  return isThisRow && !remLoading && remStatus ? (
-    ''
-  ) : (
-    <TableRow sx={{ position: 'relative', zIndex: 6 }}>
+  const remove = () => dispatch(removeProduct(product.product));
+  const inc = () => dispatch(increment(product.product));
+  const dec = () => dispatch(decrement(product.product));
+
+  return (
+    <TableRow>
       <TableCell>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <Image width="100" height="100" src={product.product.image}></Image>
+          <Image
+            width="100"
+            height="100"
+            src={`${product.image}`}
+            layout="fixed"
+          />
           <Stack>
-            <Typography>{product?.product.name}</Typography>
-            <Typography>{product?.product.price}</Typography>
+            <Typography>{`${product.name}`}</Typography>
+            <Typography>{`${product.price}`}</Typography>
             <Box sx={{ justifySelf: 'start' }}>
               <IconButton edge="start" color="error" onClick={remove}>
                 <DeleteIcon />
@@ -41,30 +47,49 @@ const ProductRow = ({ product }) => {
         </Stack>
       </TableCell>
 
-      <QtyCounter
-        productId={product.product._id}
-        qty={product.qty}
-        inStock={product.product.countInStock}
-      />
-      <TableCell align="right">
-        {ccyFormat(product?.product.price * product.qty)}
+      <TableCell>
+        <div style={{ width: 'min-content' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              border: 0.1,
+              flexDirection: 'row',
+              bgcolor: 'background.paper',
+              flexWrap: 'nowrap',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+            }}
+          >
+            <Box sx={{ borderRight: 0.1 }}>
+              <IconButton disabled={product.qty === 1} onClick={dec}>
+                <RemoveIcon />
+              </IconButton>
+            </Box>
+            <Box
+              sx={{
+                p: 1,
+                alignSelf: 'stretch',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {`${product.qty}`}
+            </Box>
+            <Box sx={{ borderLeft: 0.1 }}>
+              <IconButton
+                disabled={product.countInStock === product.qty}
+                onClick={inc}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
+          </Box>
+        </div>
       </TableCell>
-      {isThisRow && remLoading && (
-        <Box
-          sx={{
-            width: '100%',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 7,
-            height: '100%',
-            cursor: 'progress',
-          }}
-        >
-          <LinearProgress />
-        </Box>
-      )}
+      <TableCell align="right">
+        {ccyFmt(product?.price * product.qty)}
+      </TableCell>
     </TableRow>
   );
 };

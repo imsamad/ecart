@@ -1,89 +1,78 @@
 import {
-  CART_INIT,
-  CART_REQ,
-  CART_ERR,
-  CART_INCDEC_INT,
-  CART_INCDEC_REQ,
-  CART_INCDEC_ERR,
-  CART_REM_INT,
-  CART_REM_REQ,
-  CART_REM_ERR,
-  CART_ADD_INT,
-  CART_ADD_REQ,
-  CART_ADD_ERR,
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_INC_ITEM,
+  CART_DEC_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+  CART_SAVE_PAYMENT_METHOD,
 } from '../constants/cartConst';
 import fetchJson from '../../lib/fetchJson';
 
-const axios = async (method, data) => {
-  const { token } = await fetchJson('/api/user');
-  return {
-    url: `${process.env.NEXT_PUBLIC_API_URL}/carts`,
-    method: method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    data: data,
-  };
+const addToLS = (data, identfier = 'cartItems') => {
+  localStorage.setItem(identfier, JSON.stringify(data));
 };
 
-export const incOrDec =
-  (product, inc = true) =>
-  async (dispatch) => {
-    try {
-      let data = {};
-      if (inc && inc !== 'dec') {
-        data = {
-          increment: {
-            product,
-          },
-        };
-      } else {
-        data = {
-          decrement: {
-            product,
-          },
-        };
-      }
-      dispatch({ type: CART_INCDEC_INT, payload: product });
-      const { cart } = await fetchJson(await axios('PATCH', data));
-
-      const updatedQty = cart.productItems.filter(
-        (p) => p.product === product
-      )[0].qty;
-
-      dispatch({ type: CART_INCDEC_REQ, payload: updatedQty });
-    } catch (err) {
-      dispatch({ type: CART_INCDEC_ERR, payload: err.message });
-    }
+export const increment =
+  (productId, qty = 1) =>
+  (dispatch, getState) => {
+    dispatch({ type: CART_INC_ITEM, payload: productId, qty });
+    addToLS(getState().cart.cartItems);
   };
 
-export const deleteProduct = (productId) => async (dispatch) => {
-  try {
-    dispatch({ type: CART_REM_INT, payload: productId });
-    await fetchJson(await axios('PUT', { productId }));
-    dispatch({ type: CART_REM_REQ, payload: productId });
-  } catch (err) {
-    dispatch({ type: CART_REM_ERR, message: err.message });
-  }
+export const decrement = (productId) => (dispatch, getState) => {
+  dispatch({ type: CART_DEC_ITEM, payload: productId });
+  addToLS(getState().cart.cartItems);
+};
+
+export const removeProduct = (productId) => (dispatch, getState) => {
+  dispatch({ type: CART_REMOVE_ITEM, payload: productId });
+  addToLS(getState().cart.cartItems);
 };
 
 export const addProduct =
   (productId, qty = 1) =>
-  async (dispatch) => {
-    try {
-      console.log('Product recievced', productId);
-      const data = { productItem: { productId: productId, qty } };
-      console.log('data to sendt', data);
-      dispatch({ type: CART_ADD_INT, payload: productId });
-      const cart = await fetchJson(await axios('POST', data));
-      console.log('From action ', cart);
-      dispatch({ type: CART_ADD_REQ, addProductStatus: true });
-    } catch (err) {
-      console.log('Error from action ', err);
-      dispatch({
-        type: CART_ADD_ERR,
-        message: err.message,
+  async (dispatch, getState) => {
+    const existItem = getState()
+      .cart.cartItems.map((p) => p.product)
+      .indexOf(productId);
+    if (existItem >= 0) {
+      dispatch(increment(productId));
+    } else {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`;
+      const product = await fetchJson({
+        method: 'GET',
+        url,
       });
+
+      if (product) {
+        const payload = {
+          product: product._id,
+          name: product.name,
+          slug: product.slug,
+          image: product.image,
+          price: product.price,
+          qty: qty,
+          countInStock: product.countInStock,
+        };
+
+        if (product.countInStock > 0) {
+          dispatch({ type: CART_ADD_ITEM, payload });
+          addToLS(getState().cart.cartItems);
+        }
+      }
     }
+  };
+export const addAddress =
+  (address, handleNext) => async (dispatch, getState) => {
+    dispatch({ type: CART_SAVE_SHIPPING_ADDRESS, payload: address });
+    handleNext();
+    addToLS(getState().cart.shippingAddress, 'shippingAddress');
+  };
+
+export const addPaymentMethod =
+  ({ payMethod }, handleNext) =>
+  (dispatch, getState) => {
+    dispatch({ type: CART_SAVE_PAYMENT_METHOD, payload: payMethod });
+    addToLS(getState().cart.paymentMethod, 'paymentMethod');
+    handleNext();
   };
