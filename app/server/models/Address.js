@@ -6,27 +6,30 @@ const reqString = {
 };
 const addressSchema = mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     body: [
       {
         type: {
           type: String,
-          enum: ['Home', 'Office', 'Temporary'],
+          enum: ['Home', 'Office'],
           default: 'Home',
         },
-        order: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Cart',
-        },
-        address: reqString,
+        fullName: reqString,
+        mobileNo: reqString,
+        pinCode: reqString,
         city: reqString,
-        postalCode: reqString,
+        landmark: reqString,
         state: reqString,
         country: {
           type: String,
           enum: country_List,
           default: 'India',
         },
+        // Flat, House no., Building, Company, Apartment
+        // local: String,
+        //Area, Street, Sector, Village
+        // area: String,
+        // address: reqString,
       },
     ],
   },

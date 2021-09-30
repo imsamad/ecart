@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import React from 'react';
+import React, { useCallback } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ProductRow from './ProductRow';
 const index = () => {
-  const { cart } = useSelector((state) => state.cart);
+  // console.log('Compo/cart/index');
+  const { cart, loading } = useSelector((state) => state.cart);
+
   return (
     <TableContainer sx={{ userSelect: 'none' }}>
       <Table sx={{ minWidth: 700 }} aria-label="spanning table">

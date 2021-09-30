@@ -1,4 +1,4 @@
-import { IconButton, Stack, TableCell } from '@mui/material';
+import { IconButton, TableCell } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -6,7 +6,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { incOrDec } from '../../redux/actions/cartActions';
 import { Box } from '@mui/system';
-import CircularProgress from '@mui/material/CircularProgress';
 export default function FlexDirection({ qty: proQty, inStock, productId }) {
   const cart = useSelector((state) => state.cart);
   const { incDecLoading, incDecProduct, incDecUpdatedQty } = cart;

@@ -2,7 +2,11 @@ import Cart from '../components/Cart';
 import withSession from '../lib/session';
 import fetchJson from '../lib/fetchJson';
 
-const cart = () => <Cart />;
+const cart = () => {
+  // console.log('Page/cart');
+
+  return <Cart />;
+};
 
 export const getServerSideProps = withSession(async function ({ req, res }) {
   const user = req.session.get('user');

@@ -3,10 +3,10 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
-
+import initState from './initialState';
 let store;
 
-function initStore(initialState) {
+function initStore(initialState = initState) {
   // console.log('3 initStore run with initialState', initialState);
   return createStore(
     reducers,
