@@ -45,7 +45,6 @@ export default function ButtonAppBar() {
                 </a>
               </Link>
             </Typography>
-
             <Link href="/cart">
               <a>
                 <IconButton
@@ -61,7 +60,6 @@ export default function ButtonAppBar() {
                 </IconButton>
               </a>
             </Link>
-
             {user && user?.email ? (
               <Tooltip title="Logout">
                 <Button
