@@ -44,7 +44,8 @@ const ProductRow = ({ product }) => {
               </IconButton>
             </Box>
           </Stack>
-        </TableCell>
+        </Stack>
+      </TableCell>
 
       <TableCell>
         <div style={{ width: 'min-content' }}>

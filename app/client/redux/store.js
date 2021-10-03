@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
 let store;
 
-function initStore(initialState = initState) {
+function initStore(initialState) {
   // console.log('3 initStore run with initialState', initialState);
   // console.log('three one');
   return createStore(

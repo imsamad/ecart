@@ -6,7 +6,6 @@ const reqString = {
 };
 const addressSchema = mongoose.Schema(
   {
-<<<<<<< HEAD
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     type: {
       type: String,
@@ -29,34 +28,6 @@ const addressSchema = mongoose.Schema(
     //Area, Street, Sector, Village
     // area: String,
     // address: reqString,
-=======
-    _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-    body: [
-      {
-        type: {
-          type: String,
-          enum: ['Home', 'Office'],
-          default: 'Home',
-        },
-        fullName: reqString,
-        mobileNo: reqString,
-        pinCode: reqString,
-        city: reqString,
-        landmark: reqString,
-        state: reqString,
-        country: {
-          type: String,
-          enum: country_List,
-          default: 'India',
-        },
-        // Flat, House no., Building, Company, Apartment
-        // local: String,
-        //Area, Street, Sector, Village
-        // area: String,
-        // address: reqString,
-      },
-    ],
->>>>>>> 19d55104b9b857755dca65eb1a18312434d4bb69
   },
   {
     toObject: { virtuals: true },
