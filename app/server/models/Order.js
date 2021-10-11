@@ -6,7 +6,7 @@ const reqString = {
 };
 const orderItem = mongoose.Schema({
   product: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     required: true,
     ref: 'Product',
   },
@@ -23,7 +23,7 @@ const orderSchema = mongoose.Schema(
 
     isDelivered: { type: Boolean, required: true, default: false },
 
-    paymentMethod: { type: Boolean, required: true, default: false },
+    paymentMethod: reqString,
 
     isPaid: { type: Boolean, required: true, default: false },
 

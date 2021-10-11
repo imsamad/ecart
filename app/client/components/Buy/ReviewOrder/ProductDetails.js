@@ -11,8 +11,7 @@ import {
 import ccyFormat from '../../../lib/ccyFormat';
 import cartDetails from '../../../lib/cartDetails';
 
-function ProductDetails({ cartItems }) {
-  const { subTotal, shippingPrice, taxPrice, total } = cartDetails(cartItems);
+function ProductDetails({ cartItems, fromOrder }) {
   return (
     <List sx={{ border: 1, borderColor: 'grey.400' }}>
       {cartItems.map((product) => (
@@ -29,9 +28,19 @@ function ProductDetails({ cartItems }) {
               (Number(product.price) * Number(product.qty)).toFixed(2)
             )}`}</Typography>
           </ListItem>
+          {!fromOrder && <Details cartItems={cartItems} />}
           <Divider />
         </React.Fragment>
       ))}
+    </List>
+  );
+}
+
+export default ProductDetails;
+export const Details = ({ cartItems }) => {
+  const { subTotal, shippingPrice, taxPrice, total } = cartDetails(cartItems);
+  return (
+    <>
       <ListItem>
         <ListItemText primary="Total" />
         <Typography variant="subtitle1">{subTotal}</Typography>
@@ -51,8 +60,6 @@ function ProductDetails({ cartItems }) {
         <ListItemText primary="Total" />
         <Typography variant="subtitle1">{total}</Typography>
       </ListItem>
-    </List>
+    </>
   );
-}
-
-export default ProductDetails;
+};

@@ -29,7 +29,7 @@ export default function ButtonAppBar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="fixed" color="secondary">
           <Toolbar>
-            <IconButton
+            {/* <IconButton
               size="large"
               edge="start"
               color="inherit"
@@ -37,7 +37,7 @@ export default function ButtonAppBar() {
               sx={{ mr: 2 }}
             >
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link href="/">
                 <a style={{ textDecoration: 'none', color: 'inherit' }}>
