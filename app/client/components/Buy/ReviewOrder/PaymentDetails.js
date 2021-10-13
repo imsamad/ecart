@@ -5,7 +5,7 @@ function PaymentDetails() {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Payment details
+        Payment details :-
       </Typography>
       <Grid container>
         <React.Fragment>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Typography, Grid, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
-function ShippingDetails(props) {
+function ShippingDetails() {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Shipping
+        Shipping To:-
       </Typography>
       <Address />
       {/* <Typography gutterBottom>{`${firstName} ${lastName}`}</Typography>

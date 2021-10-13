@@ -30,7 +30,10 @@ const Pay = ({ handleNext, handleBack }) => {
   return (
     <Grid container sx={{ p: 2 }}>
       <Grid xs={12} md={6} sx={{ margin: 'auto' }} item>
-        <Paper elevation={2} sx={{ border: 1, borderColor: 'grey.500', pt: 2 }}>
+        <Paper
+          elevation={2}
+          sx={{ border: 1, borderColor: 'grey.500', pt: 2, borderRadius: 4 }}
+        >
           <Typography align="center" variant="h6">
             Select a Pay Option
           </Typography>

@@ -13,6 +13,7 @@ const index = (props) => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
+        bgcolor: 'grey.100',
       }}
     >
       <Box>

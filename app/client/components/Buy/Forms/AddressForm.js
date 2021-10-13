@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button, Typography } from '@mui/material';
+import { Grid, Button, Typography, Paper } from '@mui/material';
 
 import TextField from '@mui/material/TextField';
 import {
@@ -31,45 +31,43 @@ const index = ({ handleNext }) => {
         sx={{
           m: 'auto',
           mt: 4,
-          border: 1,
-          borderRadius: 4,
-          p: 2,
-          borderColor: 'grey.600',
         }}
       >
-        <Typography align="center" variant="h6">
-          Shipping address
-        </Typography>
-        <form>
-          {fields.map((field) => {
-            const identifier = AddressFormModel[field].name;
-            return (
-              <TextField
-                key={`${identifier}`}
-                id={`${identifier}`}
-                label={`${AddressFormModel[field].label}`}
-                type="text"
-                fullWidth
-                margin="normal"
-                size="small"
-                onChange={formik.handleChange}
-                defaultValue={`${formik.values[identifier]}`}
-                error={Boolean(formik.errors[identifier])}
-                helperText={formik.errors[identifier]}
-                name={`${identifier}`}
-              />
-            );
-          })}
+        <Paper sx={{ p: 2, borderRadius: 4, borderColor: 'grey.600' }}>
+          <Typography align="center" variant="h6">
+            Shipping address
+          </Typography>
+          <form>
+            {fields.map((field) => {
+              const identifier = AddressFormModel[field].name;
+              return (
+                <TextField
+                  key={`${identifier}`}
+                  id={`${identifier}`}
+                  label={`${AddressFormModel[field].label}`}
+                  type="text"
+                  fullWidth
+                  margin="normal"
+                  size="small"
+                  onChange={formik.handleChange}
+                  defaultValue={`${formik.values[identifier]}`}
+                  error={Boolean(formik.errors[identifier])}
+                  helperText={formik.errors[identifier]}
+                  name={`${identifier}`}
+                />
+              );
+            })}
 
-          <Button
-            variant="contained"
-            color="secondary"
-            type="submit"
-            onClick={formik.handleSubmit}
-          >
-            Next
-          </Button>
-        </form>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+              onClick={formik.handleSubmit}
+            >
+              Next
+            </Button>
+          </form>
+        </Paper>
       </Grid>
     </Grid>
   );

@@ -42,7 +42,7 @@ export const Details = ({ cartItems }) => {
   return (
     <>
       <ListItem>
-        <ListItemText primary="Total" />
+        <ListItemText primary="Subtotal" />
         <Typography variant="subtitle1">{subTotal}</Typography>
       </ListItem>
       <Divider />
@@ -56,7 +56,7 @@ export const Details = ({ cartItems }) => {
         <Typography variant="subtitle1">{taxPrice}</Typography>
       </ListItem>
       <Divider />
-      <ListItem>
+      <ListItem sx={{ fontWeight: 'bold' }}>
         <ListItemText primary="Total" />
         <Typography variant="subtitle1">{total}</Typography>
       </ListItem>
