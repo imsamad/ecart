@@ -48,9 +48,7 @@ const productSchema = mongoose.Schema(
       default: 0,
     },
   },
-  {
-    timestamps: true,
-  }
+  { toObject: { virtuals: true }, toJSON: { virtuals: true }, timestamps: true }
 );
 
 productSchema.pre('save', function (next) {

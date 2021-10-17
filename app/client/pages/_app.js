@@ -30,6 +30,7 @@ export default function MyApp(props) {
   } else {
     store = useStore(undefined);
   }
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>

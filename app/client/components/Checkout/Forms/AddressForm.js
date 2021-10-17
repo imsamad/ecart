@@ -33,7 +33,7 @@ const index = ({ handleNext }) => {
           mt: 4,
         }}
       >
-        <Paper sx={{ p: 2, borderRadius: 4, borderColor: 'grey.600' }}>
+        <Paper sx={{ p: 2, borderRadius: 4, borderColor: 'grey.500' }}>
           <Typography align="center" variant="h6">
             Shipping address
           </Typography>
@@ -50,7 +50,7 @@ const index = ({ handleNext }) => {
                   margin="normal"
                   size="small"
                   onChange={formik.handleChange}
-                  defaultValue={`${formik.values[identifier]}`}
+                  value={`${formik.values[identifier] ?? ''}`}
                   error={Boolean(formik.errors[identifier])}
                   helperText={formik.errors[identifier]}
                   name={`${identifier}`}

@@ -21,7 +21,10 @@ const placeOrder = async (cart, redirect) => {
   const shippingAddress = cart.shippingAddress;
   const paymentMethod = cart.paymentMethod;
   const data = { orderItems, shippingAddress, paymentMethod };
-  const { order } = await fetchJson(await axios('POST', data));
+  const {
+    data: { order },
+  } = await fetchJson(await axios('POST', data));
+
   redirect(order.id);
 };
 export default placeOrder;

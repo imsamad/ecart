@@ -5,7 +5,7 @@ export const AddressFormModel = {
     label: 'Full Name *',
     stringErrorMsg: 'Enter your full name',
     requiredErrorMsg: 'Full Name is required',
-    minLength: 8,
+    minLength: 6,
     minLengthErrorMsg: 'Full Name should be of minimum 8 characters length',
   },
   mobileNo: {

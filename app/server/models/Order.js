@@ -19,16 +19,18 @@ const orderSchema = mongoose.Schema(
 
     address: { type: mongoose.Schema.Types.ObjectId, ref: 'Address' },
 
-    deliveredAt: { type: Date },
+    taxPercentage: { type: Number, required: true, default: 7 },
+    taxPrice: { type: Number, required: true, default: 0 },
+    shippingPrice: { type: Number, required: true, default: 0 },
+    subTotal: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
 
+    deliveredAt: { type: Date },
     isDelivered: { type: Boolean, required: true, default: false },
 
     paymentMethod: reqString,
-
     isPaid: { type: Boolean, required: true, default: false },
-
     paidAt: { type: Date },
-
     paymentResult: {
       payerID: { type: String },
       paymentID: { type: String },

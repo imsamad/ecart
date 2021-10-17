@@ -68,7 +68,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   let response = {
     totalCount,
     success: true,
-    data: temp.length ? temp : results,
+    data: { products: temp.length ? temp : results },
   };
   if (pagination) response.pagination = pagination;
 

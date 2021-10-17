@@ -2,45 +2,119 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Order = require('../models/Order');
 const Address = require('../models/Address');
+const Product = require('../models/Product');
+const mongoose = require('mongoose');
 
-// @desc      Get all users
+// @desc      Create order
 // @route     POST /api/v1/orders
 // @access    Private
 exports.createOrder = asyncHandler(async (req, res, next) => {
-  console.log('req.body', req.body);
   const { orderItems, shippingAddress, paymentMethod } = req.body;
-  console.log('shippingAddress', shippingAddress);
-  const user = req.user.id;
+  let subTotal = 0;
 
+  try {
+    let productIds = [];
+    for (var i = 0; i < orderItems.length; i++) {
+      if (!mongoose.Types.ObjectId.isValid(orderItems[i].product))
+        return next(new ErrorResponse('Please provide valid products.', 422));
+
+      productIds.push(orderItems[i].product);
+    }
+
+    const productExist = await Product.find({ _id: { $in: productIds } });
+
+    if (!productExist || orderItems.length !== productExist.length) {
+      return next(new ErrorResponse('Please provide valid products.', 400));
+    }
+
+    // Check if incoming orderItems qty exceed actual value of couuntInStock
+    for (var i = 0; i < orderItems.length; i++) {
+      const thisProduct = productExist.find(
+        (p) => p.id === orderItems[i].product
+      );
+      if (thisProduct.countInStock < orderItems[i].qty) {
+        return next(
+          new ErrorResponse(
+            "Please provide valid order's products quantity.",
+            422
+          )
+        );
+      }
+      subTotal +=
+        parseInt(thisProduct.price, 10) * parseInt(orderItems[i].qty, 10);
+    }
+  } catch (err) {
+    return next(new ErrorResponse('Please provide valid products.', 400));
+  }
+  const user = req.user.id;
   const address = new Address({
     ...shippingAddress,
     country: 'India',
     user: user,
   });
-  console.log('address pre', address);
+
+  const taxPercentage = subTotal > 100 ? 3 : 7;
+  const taxPrice = subTotal * (taxPercentage / 100);
+  const shippingPrice = 10;
+  const totalPrice = subTotal + shippingPrice + taxPrice;
+
   const order = new Order({
     orderItems: orderItems,
     address: address._id,
     user: user,
     paymentMethod,
+    taxPercentage,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    subTotal,
   });
-  console.log('order pre', order);
   await address.save();
   const newOrder = await order.save();
-  console.log('newOrder', newOrder);
-  res.json({ success: true, order: newOrder });
+  console.log('new order', newOrder);
+  res.json({ success: true, data: { order: newOrder } });
 });
 
 // @desc      Get single order
 // @route     GET /api/v1/orders/:id
 // @access    Private
 exports.getOrder = asyncHandler(async (req, res, next) => {
-  const order = await Order.findOne({ user: req.user.id })
+  const order = await Order.findOne({ _id: req.params.oid, user: req.user.id })
     .populate('orderItems.product')
     .populate('address');
 
   res.status(200).json({
     success: true,
-    order: order,
+    data: { order },
   });
+});
+
+//  Desc    Update order to paid
+//  Route   PUT /api/orders/:oid/pay
+//  Access  Private/Protect
+exports.updateOrderToPaid = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.oid);
+  if (order) {
+    if (req.body.status === 'COMPLETED') {
+      order.isPaid = req.body.paid ?? true;
+      order.paidAt = req.body.create_time ?? Date.now();
+      order.paymentMethod = req.body.paymentMethod || 'payapl';
+      order.paymentResult = {
+        payerID: req.body.payer.payer_id,
+        paymentID: req.body.id,
+        paymentToken: req.body.payer.paymentToken ?? '',
+        email: req.body.payer.email_address,
+        returnUrl: req.body.payer.returnUrl ?? '',
+      };
+      const updatedOrder = await order.save();
+      return res.status(200).json({
+        success: true,
+        data: { order: updatedOrder },
+      });
+    } else {
+      return next(new ErrorResponse('Transaction failed.', 404));
+    }
+  } else {
+    return next(new ErrorResponse('Order does not exist', 422));
+  }
 });

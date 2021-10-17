@@ -8,8 +8,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import AddCartBtn from '../AddCartBtn';
-export default function BasicCard({ product }) {
-  // console.log('product from card', product._id);
+export default function ProductCard({ product }) {
   return (
     <Box sx={{ position: 'relative' }}>
       <CardActionArea>

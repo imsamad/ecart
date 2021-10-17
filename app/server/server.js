@@ -1,10 +1,9 @@
 const path = require('path');
 const express = require('express');
+// Load .env
 require('dotenv').config({ path: './config/.env' });
 const morgan = require('morgan');
 const colors = require('colors');
-const fileupload = require('express-fileupload');
-// const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -12,11 +11,16 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
 const compression = require('compression');
+
 const cache = require('./middleware/cache');
 const errorHandler = require('./middleware/error');
 const notFound = require('./middleware/notFound');
 const connectDB = require('./config/db');
 const shouldCompress = require('./utils/shouldCompress');
+
+// const fileupload = require('express-fileupload');
+// const cookieParser = require('cookie-parser');
+
 const app = express();
 // Compress all responses
 app.use(compression({ filter: shouldCompress }));
@@ -27,11 +31,11 @@ app.use(express.json());
 // Cookie parser
 // app.use(cookieParser());
 
+// File uploading
+// app.use(fileupload());
+
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-
-// File uploading
-app.use(fileupload());
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -56,8 +60,9 @@ app.use(hpp());
 app.use(cors());
 
 // Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
-// Do caching...
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// Caching
 if (process.env.USE_CACHE === 'true') app.use(cache(300));
 
 const combineRouters = require('./routes/combineRtr');

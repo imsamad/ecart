@@ -35,6 +35,7 @@ export const addProduct =
     const existItem = getState()
       .cart.cartItems.map((p) => p.product)
       .indexOf(productId);
+
     if (existItem >= 0) {
       dispatch(increment(productId));
     } else {

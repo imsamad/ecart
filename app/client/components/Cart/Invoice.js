@@ -7,16 +7,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import NextButton from './NextButton';
 
-export default function SpanningTable({
-  subTotal,
-  total,
-  shippingPrice,
-  taxPrice,
-  fromSelect,
+export default function Invoice({
+  cartInvoice: { subTotal, total, shippingPrice, taxPrice },
+  fromCheckoutPage,
 }) {
+  // console.log('cart/Invoice');
   return (
     <TableContainer>
-      <Table aria-label="spanning tablehrt">
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell colSpan={3} align="center">
@@ -43,10 +41,10 @@ export default function SpanningTable({
             <TableCell colSpan={2}>Total</TableCell>
             <TableCell align="right"> {total}</TableCell>
           </TableRow>
-          {!fromSelect && (
+          {!fromCheckoutPage && (
             <TableRow>
               <TableCell colSpan={3}>
-                <NextButton />
+                <NextButton from="invoice" />
               </TableCell>
             </TableRow>
           )}

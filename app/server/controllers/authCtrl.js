@@ -17,7 +17,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     password,
     role: role ?? 'user',
   });
-  /**
+  /*
   // grab token and send to email
   const confirmEmailToken = user.generateEmailConfirmToken();
 

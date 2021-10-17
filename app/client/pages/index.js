@@ -1,14 +1,13 @@
 import HomePage from '../components/Home';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
+import fetchJson from '../lib/fetchJson';
 export default function Index() {
-  const state = useSelector((state) => state);
-  // console.log('state', state);
   return <HomePage />;
 }
 export const getStaticProps = async () => {
   const apiUrl = process.env.API_URL;
-  const { data: products } = await axios.get(`${apiUrl}/products`);
+  const {
+    data: { products },
+  } = await fetchJson(`${apiUrl}/products`);
   return {
     props: {
       data: products,

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Fab } from '@mui/material';
-
-// import addProduct from '../../lib/addToCart';
 import { addProduct } from '../../redux/actions/cartActions';
+import { openSnack } from '../../redux/actions/snackActions';
 import { useDispatch } from 'react-redux';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-const index = ({ product }) => {
+const index = ({ product, countInStock }) => {
   const dispatch = useDispatch();
-  // const [loader, setLoader] = useState(false);
-  const addToCart = () => dispatch(addProduct(product));
+  const addToCart = () => {
+    dispatch(addProduct(product));
+    dispatch(openSnack());
+  };
 
   return (
     <Fab
@@ -23,11 +24,6 @@ const index = ({ product }) => {
       onClick={addToCart}
     >
       <AddShoppingCartIcon fontSize="small" />
-      {/* {loader ? (
-        <CircularProgress size={15} sx={{ color: '#fff' }} />
-      ) : (
-        <AddShoppingCartIcon fontSize="small" />
-      )} */}
     </Fab>
   );
 };

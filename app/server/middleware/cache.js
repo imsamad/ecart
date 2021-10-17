@@ -5,7 +5,7 @@ const cache = new NodeCache();
 module.exports = (duration) => (req, res, next) => {
   // Not cache parameterised url.
   // if (Object.keys(req.query).length !== 0) return next();
-
+  console.log('cache ');
   if (req.method !== 'GET' || req.originalUrl == '/api/v1/carts') return next();
   const key = req.originalUrl;
 

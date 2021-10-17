@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Stack from '@mui/material/Stack';
@@ -9,32 +9,34 @@ import { Box } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 
 import ccyFmt from '../../lib/ccyFormat';
-import AddIcon from '@mui/icons-material/Add';
 
 import { useDispatch } from 'react-redux';
+
 import {
   increment,
   decrement,
   removeProduct,
 } from '../../redux/actions/cartActions';
-import RemoveIcon from '@mui/icons-material/Remove';
 
+import Qty from './QtyCounter';
 const ProductRow = ({ product }) => {
+  // console.log('cart/ProductRow');
   const dispatch = useDispatch();
   const remove = () => dispatch(removeProduct(product.product));
   const inc = () => dispatch(increment(product.product));
   const dec = () => dispatch(decrement(product.product));
-
   return (
     <TableRow>
       <TableCell>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <Image
-            width="100"
-            height="100"
-            src={`${product.image}`}
-            layout="fixed"
-          />
+          <div>
+            <Image
+              width={75}
+              height={75}
+              src={`${product.image}`}
+              layout="fixed"
+            />
+          </div>
           <Stack>
             <Typography>{`${product.name}`}</Typography>
             <Typography>{`${product.price}`}</Typography>
@@ -48,44 +50,12 @@ const ProductRow = ({ product }) => {
       </TableCell>
 
       <TableCell>
-        <div style={{ width: 'min-content' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              border: 0.1,
-              flexDirection: 'row',
-              bgcolor: 'background.paper',
-              flexWrap: 'nowrap',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Box sx={{ borderRight: 0.1 }}>
-              <IconButton disabled={product.qty === 1} onClick={dec}>
-                <RemoveIcon />
-              </IconButton>
-            </Box>
-            <Box
-              sx={{
-                p: 1,
-                alignSelf: 'stretch',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {`${product.qty}`}
-            </Box>
-            <Box sx={{ borderLeft: 0.1 }}>
-              <IconButton
-                disabled={product.countInStock === product.qty}
-                onClick={inc}
-              >
-                <AddIcon />
-              </IconButton>
-            </Box>
-          </Box>
-        </div>
+        <Qty
+          decrement={dec}
+          increment={inc}
+          productQty={product.qty}
+          countInStock={product.countInStock}
+        />
       </TableCell>
       <TableCell align="right">
         {ccyFmt(product?.price * product.qty)}
@@ -94,4 +64,5 @@ const ProductRow = ({ product }) => {
   );
 };
 
+// export default React.memo(ProductRow);
 export default ProductRow;

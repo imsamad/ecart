@@ -3,7 +3,8 @@ import Container from '@mui/material/Container';
 import Copyright from '../Copyright';
 import Header from '../Header';
 // import UIContextProvider from '../../UICtx';
-
+import SnackBar from '../SnackBar';
+import { SnackbarProvider } from 'notistack';
 const index = (props) => {
   return (
     //  <UIContextProvider>
@@ -19,10 +20,11 @@ const index = (props) => {
       <Box>
         <Header />
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
-        <Container fixed>
-          <h1>{props.children}</h1>
-        </Container>
+      <Box sx={{ flexGrow: 1, mt: 4 }}>
+        <SnackbarProvider maxSnack={3}>
+          <SnackBar />
+          <Container fixed>{props.children}</Container>
+        </SnackbarProvider>
       </Box>
       <Box>
         <Copyright />

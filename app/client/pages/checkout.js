@@ -1,8 +1,8 @@
 import React from 'react';
-import Buy from '../components/Buy';
+import Checkout from '../components/Checkout';
 import withSession from '../lib/session';
-const buy = () => {
-  return <Buy />;
+const checkout = () => {
+  return <Checkout />;
 };
 
 export const getServerSideProps = withSession(async function ({ req, res }) {
@@ -10,7 +10,7 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
   if (!user) {
     return {
       redirect: {
-        destination: '/login?redirectTo=buy',
+        destination: '/login?redirectTo=checkout',
         permanent: false,
       },
     };
@@ -20,4 +20,4 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
     props: {},
   };
 });
-export default buy;
+export default checkout;

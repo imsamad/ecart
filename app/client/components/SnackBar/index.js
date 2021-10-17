@@ -1,35 +1,60 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import Button from '@mui/material/Button';
+import { useSnackbar } from 'notistack';
+import Link from 'next/link';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeSnack } from '../../redux/actions/snackActions';
+function MyApp() {
+  const { open: snackOpen } = useSelector((state) => state.snack);
+  const dispatch = useDispatch();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const snackKey = React.useRef([]);
+  const addKey = (key) => {
+    snackKey.current = [...snackKey.current, key];
+  };
+  const removeKey = (key) => {
+    const newKey = snackKey.current.filter((k) => k !== key);
+    snackKey.current = [...newKey];
+    closeSnackbar(key);
+  };
+  const handleClose = (key) => {
+    removeKey(key);
+  };
+  const handleClickVariant = (variant) => {
+    const key = enqueueSnackbar('Added To Cart!', {
+      variant,
+      autoHideDuration: 2000,
+      action: (key) => {
+        return (
+          <Link href="/cart">
+            <Button
+              size="small"
+              color="secondary"
+              variant="contained"
+              disableElevation
+              onClick={() => handleClose(key)}
+              endIcon={<ShoppingCartIcon />}
+            >
+              View
+            </Button>
+          </Link>
+        );
+      },
+      onExited: (_event, key) => {
+        removeKey(key);
+      },
+    });
+    addKey(key);
+  };
 
-import { Snackbar, Alert as MuiAlert } from '@mui/material';
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-export default function index({
-  open,
-  handleClose,
-  snake: {
-    position: { h, v },
-    body,
-    type,
-  },
-}) {
-  return (
-    <Snackbar
-      anchorOrigin={{ vertical: v, horizontal: h }}
-      open={open}
-      autoHideDuration={6000}
-      key={v + h + Math.random()}
-      onClose={handleClose}
-    >
-      <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
-        {body}
-      </Alert>
-    </Snackbar>
-  );
+  useEffect(() => {
+    if (snackOpen) {
+      handleClickVariant('success');
+      dispatch(closeSnack());
+    }
+  }, [snackOpen]);
+  return null;
 }
 
-// error
-// warning
-// info
-// success
+export default MyApp;
