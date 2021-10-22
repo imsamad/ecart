@@ -1,14 +1,13 @@
 import { TableCell } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { payOrder } from '../../redux/actions/orderPayActions';
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import dynamic from 'next/dynamic';
 
-const PaypalBtn = dynamic(() => import('../PaypalBtn/App'), {
+const PaypalBtn = dynamic(() => import('../PaypalBtn'), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
+import { payOrder } from '../../redux/actions/orderPayActions';
 
 const PayButton = () => {
   const dispatch = useDispatch();
@@ -26,7 +25,9 @@ const PayButton = () => {
   return orderPay.isPaid || isPaid ? (
     <>
       <TableCell>Pay Status</TableCell>
-      <TableCell>Paid</TableCell>
+      <TableCell>
+        <CheckCircleIcon size="small" color="info" />
+      </TableCell>
     </>
   ) : (
     <TableCell colSpan={2}>

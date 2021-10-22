@@ -1,5 +1,5 @@
-import { Grid, Typography } from '@mui/material';
 import React from 'react';
+import { Grid, Typography } from '@mui/material';
 
 import ProfileForm from './ProfileForm';
 import OrdersTable from './OrdersTable';

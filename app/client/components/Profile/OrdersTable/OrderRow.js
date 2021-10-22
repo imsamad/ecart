@@ -63,6 +63,7 @@ const OrderRow = ({ order }) => {
         open={open}
         handleClickOpen={handleClickOpen}
         handleClose={handleClose}
+        order={order}
       />
     </TableRow>
   );

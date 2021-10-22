@@ -17,7 +17,6 @@ const orderPayReducer = (
     case ORDER_PAY_REQ:
       return { loading: true, ...state };
     case ORDER_PAY_SUCC:
-      console.log('payloadpayload', payload);
       return { ...state, loading: false, ...payload };
     case ORDER_PAY_ERR:
       return { loading: false, error: true };

@@ -114,7 +114,15 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-
+  if (
+    user.username.toString() === req.body.username &&
+    req.body.email === user.email.toString()
+  ) {
+    return res.status(200).json({
+      success: true,
+      data: { user, noChange: true },
+    });
+  }
   res.status(200).json({
     success: true,
     data: user,

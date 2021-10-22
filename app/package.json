@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "config": "cd client && cp .env.example .env && cd ../server/config && cp .env.example .env",
     "bootup": "npm i && cd server && npm i && cd ../client && npm i",
     "server": "cd server && npm run dev ",
     "client": " cd client  && npm run dev",

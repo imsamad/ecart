@@ -12,20 +12,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getOrders } from '../../../redux/actions/myOrdersAction';
 import OrderRow from './OrderRow';
+
 export default function index() {
   const { orders, loading } = useSelector((state) => state.myOrders);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getOrders());
   }, []);
-  const date = new Date(orders[0]?.createdAt);
-
-  console.log('orde', date.getFullYear());
-  const getDate = (val) => {
-    let date = new Date(orders[0]?.createdAt);
-    date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-    return date;
-  };
   // return 'ok';
   return (
     <Box
@@ -56,7 +49,7 @@ export default function index() {
             </TableHead>
             <TableBody>
               {orders.map((order) => (
-                <OrderRow order={order} />
+                <OrderRow order={order} key={order.id} />
               ))}
             </TableBody>
           </Table>

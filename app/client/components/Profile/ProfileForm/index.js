@@ -5,11 +5,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import MenuItem from '@mui/material/MenuItem';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { Typography } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { profileFormValidationSchema as validationSchema } from './FormModal';
-import { Typography } from '@mui/material';
+import { updateProfile } from '../../../redux/actions/profileAction';
+
 const genders = [
   {
     value: 'male',
@@ -26,15 +29,20 @@ const genders = [
 ];
 
 const AccountForm = () => {
-  const { user } = useSelector((state) => state.profile);
-  const initialValues = {
-    username: user.username,
-    email: user.email,
-    gender: user.gender ?? 'male',
+  const { user, errMsg, error } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+
+  const onSubmit = (value, action) => {
+    dispatch(updateProfile(value));
+    action.setSubmitting(false);
   };
-  const onSubmit = (value) => console.log('onSubmitonSubmit', value);
+
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      username: user.username,
+      email: user.email,
+      gender: user.gender ?? 'male',
+    },
     validationSchema,
     onSubmit,
   });
@@ -45,14 +53,22 @@ const AccountForm = () => {
     error: Boolean(formik.errors[name]),
     helperText: formik.errors[name],
   });
+
   const [disabled, setDisabled] = React.useState(true);
+
   return (
     <Box
       sx={{ p: 1, border: 1, borderRadius: 2, borderColor: 'secondary.light' }}
     >
+      {formik.isSubmitting && <LinearProgress />}
       <Typography align="center" gutterBottom variant="h6">
         My Account
       </Typography>
+      {error && (
+        <Typography align="center" gutterBottom variant="body1" color="error">
+          {errMsg}
+        </Typography>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();

@@ -78,7 +78,7 @@ connectDB().then(() => {
   server = app.listen(
     PORT,
     console.log(
-      `Server running in ${process.env.NODE_ENV} mode on  http://localhost:${PORT}`
+      `Server running in ${process.env.NODE_ENV} mode on http://localhost:${PORT}`
         .yellow.bold
     )
   );
