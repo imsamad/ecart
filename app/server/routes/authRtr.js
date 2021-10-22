@@ -13,7 +13,11 @@ const {
 
 const router = express.Router();
 
+const addressRouter = require('./addressRtr');
+
 const { protect } = require('../middleware/auth');
+
+router.use('/address', addressRouter);
 
 router.post('/register', register);
 router.post('/login', login);

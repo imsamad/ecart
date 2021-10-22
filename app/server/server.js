@@ -63,7 +63,8 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // Caching
-if (process.env.USE_CACHE === 'true') app.use(cache(300));
+// if (process.env.USE_CACHE === 'true') app.use(cache(300));
+app.use(cache(300));
 
 const combineRouters = require('./routes/combineRtr');
 app.use(combineRouters);

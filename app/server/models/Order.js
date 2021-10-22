@@ -27,7 +27,10 @@ const orderSchema = mongoose.Schema(
 
     deliveredAt: { type: Date },
     isDelivered: { type: Boolean, required: true, default: false },
+    // tracking: "123412341234"
 
+    // gateway: "stripe",
+    // type: "credit",
     paymentMethod: reqString,
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
@@ -38,6 +41,13 @@ const orderSchema = mongoose.Schema(
       email: { type: String },
       returnUrl: { type: String },
     },
+    // card: {
+    //   brand: "Visa",
+    //   pan: "4242424242424242",
+    //   expirationMonth: 1,
+    //   expirationYear: 2090,
+    //   cvv: 123
+    // }
   },
   {
     toObject: { virtuals: true },

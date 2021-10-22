@@ -6,6 +6,7 @@ const combineRouter = express.Router();
 const auth = require('./authRtr');
 const products = require('./productsRtr');
 const orders = require('./orderRtr');
+const data = require('./dataRtr');
 
 const ErrorResponse = require('../utils/errorResponse');
 
@@ -13,17 +14,6 @@ const ErrorResponse = require('../utils/errorResponse');
 combineRouter.use('/api/v1/auth', auth);
 combineRouter.use('/api/v1/products', products);
 combineRouter.use('/api/v1/orders', orders);
-combineRouter.get('/api/v1', (req, res, next) => {
-  const obj = [{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }];
-  for (var i = 0; i < obj.length; i++) {
-    var val = obj[i];
-    if (val.a === 3) {
-      // return next(new ErrorResponse('Burned out...'));
-      return res.json({ msf: 'Ok burned out' });
-    }
-    console.log('Val', val);
-  }
-  res.json({ msg: 'Yes API is running...' });
-});
+combineRouter.use('/api/v1/data', data);
 
 module.exports = combineRouter;

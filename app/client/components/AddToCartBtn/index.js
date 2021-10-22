@@ -1,9 +1,11 @@
 import React from 'react';
 import { Fab } from '@mui/material';
-import { addProduct } from '../../redux/actions/cartActions';
-import { openSnack } from '../../redux/actions/snackActions';
 import { useDispatch } from 'react-redux';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+
+import { addProduct } from '../../redux/actions/cartActions';
+import { openSnack } from '../../redux/actions/snackActions';
+
 const index = ({ product, countInStock }) => {
   const dispatch = useDispatch();
   const addToCart = () => {

@@ -5,15 +5,18 @@ import {
   Button,
   Typography,
   Tooltip,
+  IconButton,
 } from '@mui/material';
 import Link from 'next/link';
-
+import FaceIcon from '@mui/icons-material/Face';
 import useUser from '../../lib/useUser';
 import fetchJson from '../../lib/fetchJson';
 import { useRouter } from 'next/router';
 // import { useUICtx } from '../../UICtx';
-
-import CartBtn from '../CartBtn';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AdminIcon from '@mui/icons-material/AdminPanelSettings';
+import CartLink from './CartLink';
+import NavLink from './NavLink';
 export default function ButtonAppBar() {
   // const { login } = useUICtx();
   const { user, mutateUser } = useUser();
@@ -23,7 +26,7 @@ export default function ButtonAppBar() {
     router.push('/login');
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <AppBar position="fixed" color="secondary">
         <Toolbar>
           {/* <IconButton
@@ -42,23 +45,48 @@ export default function ButtonAppBar() {
           </Typography>
           <Link href="/cart">
             <a>
-              <CartBtn />
+              <CartLink />
             </a>
           </Link>
+
           {user && user?.email ? (
-            <Tooltip title="Logout">
-              <Button
-                onClick={logout}
-                style={{
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  textTransform: 'none',
-                }}
-              >
-                {user.email || user.username || 'Logout'}
-              </Button>
-            </Tooltip>
+            <>
+              <Link href="/profile">
+                <a
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <NavLink>
+                    <Tooltip title="Go To Profile">
+                      <FaceIcon fontSize="small" />
+                    </Tooltip>
+                  </NavLink>
+                </a>
+              </Link>
+
+              <Link href="/admin">
+                <a
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <NavLink>
+                    <Tooltip title="Go To Admin">
+                      <AdminIcon fontSize="small" />
+                    </Tooltip>
+                  </NavLink>
+                </a>
+              </Link>
+
+              <NavLink onClick={logout}>
+                <Tooltip title="Logout">
+                  <ExitToAppIcon fontSize="small" />
+                </Tooltip>
+              </NavLink>
+            </>
           ) : (
             <Button color="inherit">
               <Link href="/login">
@@ -72,6 +100,6 @@ export default function ButtonAppBar() {
       </AppBar>
       {/*To Offest from Top in case of fixed Header */}
       <Toolbar />
-    </Box>
+    </>
   );
 }

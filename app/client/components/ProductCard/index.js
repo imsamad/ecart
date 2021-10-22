@@ -7,7 +7,9 @@ import {
   CardActionArea,
 } from '@mui/material';
 import Link from 'next/link';
-import AddCartBtn from '../AddCartBtn';
+
+import AddToCartBtn from '../AddToCartBtn';
+
 export default function ProductCard({ product }) {
   return (
     <Box sx={{ position: 'relative' }}>
@@ -38,7 +40,7 @@ export default function ProductCard({ product }) {
           </a>
         </Link>
       </CardActionArea>
-      <AddCartBtn
+      <AddToCartBtn
         product={product._id.toString()}
         countInStock={product.countInStock}
       />

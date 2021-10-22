@@ -5,6 +5,7 @@ import Card from '../ProductCard';
 
 const index = () => {
   const { products } = useSelector((state) => state.products);
+
   return (
     <Grid container spacing={2}>
       {products?.map((product) => (

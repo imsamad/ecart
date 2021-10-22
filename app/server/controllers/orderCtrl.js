@@ -78,7 +78,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
 // @desc      Get single order
 // @route     GET /api/v1/orders/:id
 // @access    Private
-exports.getOrder = asyncHandler(async (req, res, next) => {
+exports.getMyOrder = asyncHandler(async (req, res, next) => {
   const order = await Order.findOne({ _id: req.params.oid, user: req.user.id })
     .populate('orderItems.product')
     .populate('address');
@@ -116,5 +116,61 @@ exports.updateOrderToPaid = asyncHandler(async (req, res) => {
     }
   } else {
     return next(new ErrorResponse('Order does not exist', 422));
+  }
+});
+
+// @desc      Get current logged in user
+// @route     GET /api/v1/orders/myorders
+// @access    Private
+exports.getMyOrders = asyncHandler(async (req, res, next) => {
+  let orders = await Order.find({ user: req.user.id });
+  res.status(200).json({
+    success: true,
+    data: { orders },
+  });
+});
+
+// @desc    Delete my order
+// @route   DELETE /api/orders/:oid
+// @access  Private
+exports.deleteMyOrder = asyncHandler(async (req, res) => {
+  const order = await Order.find({ id: req.params.id, user: req.user.id });
+
+  if (!order) {
+    return next(new ErrorResponse('Order not found', 404));
+  }
+
+  await order.remove();
+  res.json({ status: true, data: {} });
+});
+
+// @desc      Get current logged in user
+// @route     GET /api/v1/orders/myorders
+// @access    Private/Admin/Seller
+exports.getAllOrders = asyncHandler(async (req, res, next) => {
+  const order = await Order.find({});
+
+  res.status(200).json({
+    success: true,
+    data: { order },
+  });
+});
+
+// @desc    Update order to delivered
+// @route   GET /api/orders/:id/deliver
+// @access  Private/Admin
+exports.updateOrderToDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = req.body.deliveredAt ?? Date.now();
+
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
   }
 });

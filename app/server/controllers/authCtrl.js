@@ -3,7 +3,6 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
 const User = require('../models/User');
-const Address = require('../models/Address');
 // @desc      Register user
 // @route     POST /api/v1/auth/register
 // @access    Public
@@ -86,13 +85,17 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/auth/me
 // @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-  // user is already available in req due to the protect middleware
-  let user = req.user;
-  let address = await Address.find({ user: req.user.id });
-  user = { ...user._doc, address };
+  let user = await User.findById(req.user.id);
   res.status(200).json({
     success: true,
-    data: user,
+    data: {
+      user: {
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        password: user.password,
+      },
+    },
   });
 });
 
@@ -103,6 +106,8 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     username: req.body.username,
     email: req.body.email,
+    // gennder
+    // dob
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
@@ -262,6 +267,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     success: true,
     token,
     username: user.username,
+    role: user.role,
     email: user.email,
   });
 };

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const country_List = require('../_data/countryList');
+
 const reqString = {
   type: String,
   required: true,
@@ -16,7 +17,8 @@ const addressSchema = mongoose.Schema(
     mobileNo: reqString,
     pinCode: reqString,
     city: reqString,
-    landmark: reqString,
+    // street1: reqString,
+    // street2: reqString,
     state: reqString,
     country: {
       type: String,

@@ -2,7 +2,13 @@ import { TableCell } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { payOrder } from '../../redux/actions/orderPayActions';
-import PaypalBtn from '../PaypalBtn/App';
+
+import dynamic from 'next/dynamic';
+
+const PaypalBtn = dynamic(() => import('../PaypalBtn/App'), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 const PayButton = () => {
   const dispatch = useDispatch();
@@ -16,10 +22,7 @@ const PayButton = () => {
   const onSuccess = (payResult) => {
     dispatch(payOrder(orderId, payResult));
   };
-
-  if (isPaid !== orderPay.isPaid)
-    return <TableCell colSpan={2}>Refresh Page</TableCell>;
-
+  // console.log('PaypalBtnPaypalBtn', PaypalBtn);
   return orderPay.isPaid || isPaid ? (
     <>
       <TableCell>Pay Status</TableCell>

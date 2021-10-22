@@ -1,12 +1,5 @@
 import fetchJson from './fetchJson';
-const login = async (
-  values,
-  action,
-  isSignIn,
-  mutateUser,
-  setHeadError,
-  snackBar
-) => {
+const login = async (values, action, isSignIn, mutateUser, setHeadError) => {
   const body = { email: values.email, password: values.password };
 
   if (!isSignIn) body.username = values.username;

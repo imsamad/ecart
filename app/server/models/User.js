@@ -6,6 +6,11 @@ const randomize = require('randomatic');
 
 const UserSchema = new mongoose.Schema(
   {
+    // fname:'',
+    // lname:'',
+    //title:'Ms,Mr,Mx',
+    //gender:'',
+    //dob
     username: {
       type: String,
       required: [true, 'Please add a name'],
@@ -21,8 +26,8 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'publisher'],
-      default: 'user',
+      enum: ['admin', 'seller', 'customer'],
+      default: 'customer',
     },
     password: {
       type: String,
@@ -33,6 +38,7 @@ const UserSchema = new mongoose.Schema(
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     confirmEmailToken: String,
+    // emailVerified:'',
     isEmailConfirmed: {
       type: Boolean,
       default: false,
@@ -43,7 +49,9 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // customerId: reqString,@ecart
   },
+
   {
     timestamps: true,
     toObject: { virtuals: true },
@@ -106,11 +114,11 @@ UserSchema.methods.generateEmailConfirmToken = function (next) {
   return confirmTokenCombined;
 };
 
-// UserSchema.virtual('addresses', {
-//   ref: 'Address',
-//   localField: '_id',
-//   foreignField: 'user',
-//   justOne: true,
-// });
+UserSchema.virtual('addresses', {
+  ref: 'Address',
+  localField: '_id',
+  foreignField: 'user',
+  justOne: true,
+});
 
 module.exports = mongoose.model('User', UserSchema);
