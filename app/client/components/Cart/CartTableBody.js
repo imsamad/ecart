@@ -1,13 +1,13 @@
 import { TableBody, TableCell, TableRow } from '@mui/material';
+
 import NextButton from './NextButton';
 import ProductRow from './ProductRow';
+
 const CartTableBody = ({
   cartItems,
   fromCheckoutPage,
   cartInvoice: { subTotal, total, shippingPrice, taxPrice },
 }) => {
-  // console.log('cart/CartTableBody');
-
   return (
     <TableBody>
       {cartItems.map((product) => (
@@ -37,7 +37,7 @@ const CartTableBody = ({
         <TableRowModified>
           <TableCell sx={{ border: 0 }} />
           <TableCell colSpan={2}>
-            <NextButton from="CartTableBody" />
+            <NextButton />
           </TableCell>
         </TableRowModified>
       )}

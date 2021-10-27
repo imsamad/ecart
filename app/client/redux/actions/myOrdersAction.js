@@ -24,7 +24,7 @@ export const getOrders = () => async (dispatch) => {
     const {
       data: { orders },
     } = await fetchJson(await axios());
-    console.log('orders from getOrders ', orders);
+
     dispatch({ type: MY_ORDERS_SUCC, payload: orders });
   } catch (err) {
     dispatch({ type: MY_ORDERS_ERR });

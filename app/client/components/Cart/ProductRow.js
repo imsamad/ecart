@@ -7,10 +7,9 @@ import { Typography } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
+import { useDispatch } from 'react-redux';
 
 import ccyFmt from '../../lib/ccyFormat';
-
-import { useDispatch } from 'react-redux';
 
 import {
   increment,
@@ -18,7 +17,7 @@ import {
   removeProduct,
 } from '../../redux/actions/cartActions';
 
-import Qty from './QtyCounter';
+import QtyCounter from './QtyCounter';
 const ProductRow = ({ product }) => {
   // console.log('cart/ProductRow');
   const dispatch = useDispatch();
@@ -50,7 +49,7 @@ const ProductRow = ({ product }) => {
       </TableCell>
 
       <TableCell>
-        <Qty
+        <QtyCounter
           decrement={dec}
           increment={inc}
           productQty={product.qty}

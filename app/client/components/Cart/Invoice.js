@@ -11,7 +11,6 @@ export default function Invoice({
   cartInvoice: { subTotal, total, shippingPrice, taxPrice },
   fromCheckoutPage,
 }) {
-  // console.log('cart/Invoice');
   return (
     <TableContainer>
       <Table>
@@ -44,7 +43,7 @@ export default function Invoice({
           {!fromCheckoutPage && (
             <TableRow>
               <TableCell colSpan={3}>
-                <NextButton from="invoice" />
+                <NextButton />
               </TableCell>
             </TableRow>
           )}

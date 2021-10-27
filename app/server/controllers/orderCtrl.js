@@ -14,10 +14,11 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
 
   try {
     let productIds = [];
+    // Store valid product ids in this variable.
     for (var i = 0; i < orderItems.length; i++) {
-      if (!mongoose.Types.ObjectId.isValid(orderItems[i].product))
+      if (!mongoose.Types.ObjectId.isValid(orderItems[i].product)) {
         return next(new ErrorResponse('Please provide valid products.', 422));
-
+      }
       productIds.push(orderItems[i].product);
     }
 
@@ -27,7 +28,7 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Please provide valid products.', 400));
     }
 
-    // Check if incoming orderItems qty exceed actual value of couuntInStock
+    // Check if incoming orderItems qty exceed actual countInStock
     for (var i = 0; i < orderItems.length; i++) {
       const thisProduct = productExist.find(
         (p) => p.id === orderItems[i].product
@@ -71,7 +72,6 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
   });
   await address.save();
   const newOrder = await order.save();
-  console.log('new order', newOrder);
   res.json({ success: true, data: { order: newOrder } });
 });
 
@@ -142,35 +142,4 @@ exports.deleteMyOrder = asyncHandler(async (req, res) => {
 
   await order.remove();
   res.json({ status: true, data: {} });
-});
-
-// @desc      Get current logged in user
-// @route     GET /api/v1/orders/myorders
-// @access    Private/Admin/Seller
-exports.getAllOrders = asyncHandler(async (req, res, next) => {
-  const order = await Order.find({});
-
-  res.status(200).json({
-    success: true,
-    data: { order },
-  });
-});
-
-// @desc    Update order to delivered
-// @route   GET /api/orders/:id/deliver
-// @access  Private/Admin
-exports.updateOrderToDelivered = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
-
-  if (order) {
-    order.isDelivered = true;
-    order.deliveredAt = req.body.deliveredAt ?? Date.now();
-
-    const updatedOrder = await order.save();
-
-    res.json(updatedOrder);
-  } else {
-    res.status(404);
-    throw new Error('Order not found');
-  }
 });

@@ -47,7 +47,7 @@ const AccountForm = () => {
     onSubmit,
   });
 
-  const renProps = (name) => ({
+  const getProps = (name) => ({
     value: formik.values[name],
     onChange: formik.handleChange,
     error: Boolean(formik.errors[name]),
@@ -82,7 +82,7 @@ const AccountForm = () => {
           margin="dense"
           id="username"
           label="User Name"
-          {...renProps('username')}
+          {...getProps('username')}
         />
         <TextField
           fullWidth
@@ -91,7 +91,7 @@ const AccountForm = () => {
           margin="dense"
           id="email"
           label="Email"
-          {...renProps('email')}
+          {...getProps('email')}
         />
         <TextField
           fullWidth
@@ -101,7 +101,7 @@ const AccountForm = () => {
           select
           id="gender"
           label="Gender"
-          {...renProps('gender')}
+          {...getProps('gender')}
         >
           {genders.map((option) => (
             <MenuItem key={option.value} value={option.value}>

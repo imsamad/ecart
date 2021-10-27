@@ -13,11 +13,12 @@ const axios = async (method, data) => {
   };
 };
 
-const placeOrder = async (cart, redirect) => {
+const placeOrder = async (cart, redirectTo) => {
   const orderItems = cart.cartItems.map((item) => ({
     product: item.product,
     qty: item.qty,
   }));
+
   const shippingAddress = cart.shippingAddress;
   const paymentMethod = cart.paymentMethod;
   const data = { orderItems, shippingAddress, paymentMethod };
@@ -25,6 +26,6 @@ const placeOrder = async (cart, redirect) => {
     data: { order },
   } = await fetchJson(await axios('POST', data));
 
-  redirect(order.id);
+  redirectTo(order.id);
 };
 export default placeOrder;

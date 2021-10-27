@@ -40,10 +40,7 @@ export default function ProductCard({ product }) {
           </a>
         </Link>
       </CardActionArea>
-      <AddToCartBtn
-        product={product._id.toString()}
-        countInStock={product.countInStock}
-      />
+      <AddToCartBtn product={product._id.toString()} />
     </Box>
   );
 }

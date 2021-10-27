@@ -2,9 +2,11 @@ import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import placeOrder from '../../../lib/placeOrder';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useRouter } from 'next/router';
+
+import placeOrder from '../../../lib/placeOrder';
+
 const index = ({ handleNext, handleBack, fromReview }) => {
   const cart = useSelector((state) => state.cart);
   const router = useRouter();

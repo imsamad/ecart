@@ -5,14 +5,15 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  FormControlLabel,
 } from '@mui/material';
 import React from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { Box } from '@mui/system';
-import { addPaymentMethod } from '../../../redux/actions/cartActions';
-import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { validationSchema } from '../../FormModals/PayMethod';
+import { useFormik } from 'formik';
+
+import { addPaymentMethod } from '../../../redux/actions/cartActions';
+import { validationSchema } from './FormModals/PayMethod';
 
 const Pay = ({ handleNext, handleBack }) => {
   const { paymentMethod } = useSelector((state) => state.cart);
@@ -60,6 +61,11 @@ const Pay = ({ handleNext, handleBack }) => {
                   control={<Radio />}
                   label="PayTM"
                 />
+                <FormControlLabel
+                  value="payPal"
+                  control={<Radio />}
+                  label="PayPal"
+                />
               </RadioGroup>
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Button
@@ -85,20 +91,8 @@ const Pay = ({ handleNext, handleBack }) => {
           </Box>
         </Paper>
       </Grid>
-      {/* <NextPrevBtn handleBack={handleBack} /> */}
     </Grid>
   );
 };
 
-const NextPrevBtn = ({ handleBack }) => (
-  <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-    <Box sx={{ flex: '1 1 auto', border: 2 }} />{' '}
-    <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-      Back
-    </Button>
-    {/* <Button onClick={handleNext}>
-       {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-     </Button> */}
-  </Box>
-);
 export default Pay;

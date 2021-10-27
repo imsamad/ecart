@@ -1,19 +1,36 @@
 import React from 'react';
-import { Typography, Table, TableContainer, Box } from '@mui/material';
+import { Typography, Table, TableContainer, Box, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
+
 import CartTableBody from './CartTableBody';
 import CartTableHead from './CartTableHead';
 import Invoice from './Invoice';
 import cartDetails from '../../lib/cartDetails';
 
 const index = ({ fromCheckoutPage }) => {
-  // console.log('cart/index');
   const { cartItems } = useSelector((state) => state.cart);
   const cartInvoice = cartDetails(cartItems);
   return cartItems.length === 0 ? (
-    <Typography variant="h6" align="center">
-      Card Is Empty
-    </Typography>
+    <Box
+      sx={{
+        maxWidth: 'sm',
+        mx: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Typography variant="h6" align="center" gutterBottom>
+        Card Is Empty
+      </Typography>
+      <Link href="/">
+        <Button color="error" variant="contained" size="small">
+          Back To Shopping
+        </Button>
+      </Link>
+    </Box>
   ) : (
     <Box sx={{ border: 1, borderRadius: 4, p: 1 }}>
       <TableContainer>

@@ -8,11 +8,9 @@ const products = require('./productsRtr');
 const orders = require('./orderRtr');
 const data = require('./dataRtr');
 
-const ErrorResponse = require('../utils/errorResponse');
-
 // Mount routers
-combineRouter.use('/api/v1/auth', auth);
 combineRouter.use('/api/v1/products', products);
+combineRouter.use('/api/v1/auth', auth);
 combineRouter.use('/api/v1/orders', orders);
 combineRouter.use('/api/v1/data', data);
 

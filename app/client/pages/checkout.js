@@ -1,6 +1,8 @@
 import React from 'react';
-import Checkout from '../components/Checkout';
 import withSession from '../lib/session';
+
+import Checkout from '../components/Checkout';
+
 const checkout = () => {
   return <Checkout />;
 };

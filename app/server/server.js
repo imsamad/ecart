@@ -18,9 +18,6 @@ const notFound = require('./middleware/notFound');
 const connectDB = require('./config/db');
 const shouldCompress = require('./utils/shouldCompress');
 
-// const fileupload = require('express-fileupload');
-// const cookieParser = require('cookie-parser');
-
 const app = express();
 // Compress all responses
 app.use(compression({ filter: shouldCompress }));
@@ -29,9 +26,11 @@ app.use(compression({ filter: shouldCompress }));
 app.use(express.json());
 
 // Cookie parser
+// const cookieParser = require('cookie-parser');
 // app.use(cookieParser());
 
 // File uploading
+// const fileupload = require('express-fileupload');
 // app.use(fileupload());
 
 // Dev logging middleware
@@ -63,8 +62,7 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // Caching
-// if (process.env.USE_CACHE === 'true') app.use(cache(300));
-app.use(cache(300));
+if (process.env.USE_CACHE === 'true') app.use(cache(300));
 
 const combineRouters = require('./routes/combineRtr');
 app.use(combineRouters);

@@ -1,10 +1,12 @@
 import React from 'react';
+import { Grid, Paper, Box } from '@mui/material';
+import { useSelector } from 'react-redux';
+
+import StepBtn from '../StepBtn';
 import ProductDetails from './ProductDetails';
 import ShippingDetails from './ShippingDetails';
 import PaymentDetails from './PaymentDetails';
-import { Grid, Paper, Box } from '@mui/material';
-import { useSelector } from 'react-redux';
-import StepBtn from '../StepBtn';
+
 export default function ReviewOrder({ handleNext, handleBack }) {
   const { cartItems, shippingAddress, paymentMethod } = useSelector(
     (state) => state.cart

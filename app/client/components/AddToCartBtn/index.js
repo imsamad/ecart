@@ -6,11 +6,11 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { addProduct } from '../../redux/actions/cartActions';
 import { openSnack } from '../../redux/actions/snackActions';
 
-const index = ({ product, countInStock }) => {
+const index = ({ product }) => {
   const dispatch = useDispatch();
-  const addToCart = () => {
-    dispatch(addProduct(product));
-    dispatch(openSnack());
+  const addToCart = async () => {
+    await dispatch(addProduct(product));
+    await dispatch(openSnack());
   };
 
   return (

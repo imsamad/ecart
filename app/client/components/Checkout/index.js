@@ -11,6 +11,7 @@ import PaymentForm from './Forms/PaymentForm';
 import ReviewOrder from './ReviewOrder';
 import Cart from '../Cart';
 import StepBtn from './StepBtn';
+
 const steps = [
   'Select a delivery address',
   'Select Pay Option',

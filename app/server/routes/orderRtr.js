@@ -8,18 +8,9 @@ const {
   updateOrderToPaid,
   getMyOrders,
   deleteMyOrder,
-
-  getAllOrders,
-  updateOrderToDelivered,
 } = require('../controllers/orderCtrl');
 
-const { protect, authorize } = require('../middleware/auth');
-
-router.route('/admin').get(protect, authorize('admin', 'seller'), getAllOrders);
-
-router
-  .route('/admin/:oid/deliver')
-  .put(protect, authorize('admin'), updateOrderToDelivered);
+const { protect } = require('../middleware/auth');
 
 router.route('/').post(protect, createOrder);
 

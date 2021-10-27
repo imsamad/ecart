@@ -6,14 +6,12 @@
   "scripts": {
     "config": "cd client && cp .env.example .env && cd ../server/config && cp .env.example .env",
     "bootup": "npm i && cd server && npm i && cd ../client && npm i",
-    "server": "cd server && npm run dev ",
-    "client": " cd client  && npm run dev",
-    "dev": "concurrently -n 'server,client' -c 'green,blue' \"npm run server\" \"npm run client\"",
-    "server-prod": "cd server &&  npm start",
-    "client-build": "cd client &&  npm run build",
-    "client-start": "cd client &&  npm start",
-    "build": "run-s server-prod client-build client-start",
-    "pro": "concurrently -n 'server,client' -c 'green,blue'  \"npm run server-prod\" \"npm run build\"",
+    "server-dev": "cd server && npm run dev ",
+    "client-dev": "cd client  && npm run dev",
+    "dev": "concurrently -n 'server,client' -c 'green,blue' \"npm run server-dev\" \"npm run client-dev\"",
+    "server": "cd server &&  npm start",
+    "client": "cd client &&  npm run build && npm start",
+    "start": "concurrently -n 'server,client' -c 'green,blue'  \"npm run server\" \"npm run client\"",
     "seed:i": "cd server && npm run data:i",
     "seed:d": "cd server && npm run data:d"
   },
@@ -21,7 +19,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^6.2.1",
-    "npm-run-all": "^4.1.5"
+    "concurrently": "^6.2.1"
   }
 }

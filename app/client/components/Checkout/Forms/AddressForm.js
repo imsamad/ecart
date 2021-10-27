@@ -1,26 +1,27 @@
 import React from 'react';
-import { Grid, Button, Typography, Paper } from '@mui/material';
-
-import TextField from '@mui/material/TextField';
-import {
-  AddressFormModel,
-  validationSchema,
-} from '../../FormModals/AddressModal';
-const fields = Object.keys(AddressFormModel);
+import { Grid, Button, Typography, Paper, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { AddressFormModel, validationSchema } from './FormModals/AddressModal';
+const fields = Object.keys(AddressFormModel);
 import { addAddress } from '../../../redux/actions/cartActions';
+
 const index = ({ handleNext }) => {
   const { shippingAddress } = useSelector((state) => state.cart);
+
   const dispatch = useDispatch();
-  const handleSubmit = (values, action) => {
+
+  const handleSubmit = (values) => {
     dispatch(addAddress(values, handleNext));
   };
+
   const formik = useFormik({
     initialValues: shippingAddress,
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
     validateOnChange: true,
+    enableReinitialize: false,
   });
   return (
     <Grid container spacing={2}>
@@ -42,18 +43,18 @@ const index = ({ handleNext }) => {
               const identifier = AddressFormModel[field].name;
               return (
                 <TextField
-                  key={`${identifier}`}
-                  id={`${identifier}`}
-                  label={`${AddressFormModel[field].label}`}
+                  key={identifier}
+                  id={identifier}
+                  name={identifier}
+                  label={AddressFormModel[`${field}`].label}
+                  value={formik.values[`${identifier}`] ?? ''}
                   type="text"
                   fullWidth
                   margin="normal"
                   size="small"
                   onChange={formik.handleChange}
-                  value={`${formik.values[identifier] ?? ''}`}
                   error={Boolean(formik.errors[identifier])}
                   helperText={formik.errors[identifier]}
-                  name={`${identifier}`}
                 />
               );
             })}

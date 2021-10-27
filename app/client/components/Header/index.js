@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Box,
   Toolbar,
   Button,
   Typography,
@@ -8,17 +7,17 @@ import {
   IconButton,
 } from '@mui/material';
 import Link from 'next/link';
-import FaceIcon from '@mui/icons-material/Face';
+import { useRouter } from 'next/router';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import MenuIcon from '@mui/icons-material/Menu';
+import FaceIcon from '@mui/icons-material/Person';
+
 import useUser from '../../lib/useUser';
 import fetchJson from '../../lib/fetchJson';
-import { useRouter } from 'next/router';
-// import { useUICtx } from '../../UICtx';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import AdminIcon from '@mui/icons-material/AdminPanelSettings';
 import CartLink from './CartLink';
 import NavLink from './NavLink';
+
 export default function ButtonAppBar() {
-  // const { login } = useUICtx();
   const { user, mutateUser } = useUser();
   const router = useRouter();
   const logout = async () => {
@@ -29,15 +28,15 @@ export default function ButtonAppBar() {
     <>
       <AppBar position="fixed" color="secondary">
         <Toolbar>
-          {/* <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton> */}
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link href="/">
               <a style={{ textDecoration: 'none', color: 'inherit' }}>e-Cart</a>
@@ -61,21 +60,6 @@ export default function ButtonAppBar() {
                   <NavLink>
                     <Tooltip title="Go To Profile">
                       <FaceIcon fontSize="small" />
-                    </Tooltip>
-                  </NavLink>
-                </a>
-              </Link>
-
-              <Link href="/admin">
-                <a
-                  style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                  }}
-                >
-                  <NavLink>
-                    <Tooltip title="Go To Admin">
-                      <AdminIcon fontSize="small" />
                     </Tooltip>
                   </NavLink>
                 </a>

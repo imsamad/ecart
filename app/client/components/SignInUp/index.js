@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 
 import useUser from '../../lib/useUser';
 import loginFun from '../../lib/loginFun';
-import { signInModel, signUpModel } from '../FormModals/SignInUpFormModel';
+import { signInModel, signUpModel } from './SignInUpFormModel';
 // import { useUICtx } from '../../UICtx';
 export default function LoginForm() {
   const [isSignIn, setIsSignIn] = useState(true);

@@ -32,12 +32,14 @@ export const removeProduct = (productId) => (dispatch, getState) => {
 export const addProduct =
   (productId, qty = 1) =>
   async (dispatch, getState) => {
+    // If product already in cart then simply do increment.
     const existItem = getState()
       .cart.cartItems.map((p) => p.product)
       .indexOf(productId);
 
     if (existItem >= 0) {
       dispatch(increment(productId));
+      // we could trigger snackbar from here also.
     } else {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`;
       const product = await fetchJson({
@@ -59,6 +61,7 @@ export const addProduct =
         if (product.countInStock > 0) {
           dispatch({ type: CART_ADD_ITEM, payload });
           addToLS(getState().cart.cartItems);
+          // we could trigger snackbar from here also.
         }
       }
     }
