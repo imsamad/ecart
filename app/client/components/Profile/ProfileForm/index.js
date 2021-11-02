@@ -13,21 +13,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { profileFormValidationSchema as validationSchema } from './FormModal';
 import { updateProfile } from '../../../redux/actions/profileAction';
 
-const genders = [
-  {
-    value: 'male',
-    label: 'Male',
-  },
-  {
-    value: 'female',
-    label: 'Female',
-  },
-  {
-    value: 'other',
-    label: 'Other',
-  },
-];
-
 const AccountForm = () => {
   const { user, errMsg, error } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
@@ -41,7 +26,6 @@ const AccountForm = () => {
     initialValues: {
       username: user.username,
       email: user.email,
-      gender: user.gender ?? 'male',
     },
     validationSchema,
     onSubmit,
@@ -93,22 +77,7 @@ const AccountForm = () => {
           label="Email"
           {...getProps('email')}
         />
-        <TextField
-          fullWidth
-          name="gender"
-          size="small"
-          margin="dense"
-          select
-          id="gender"
-          label="Gender"
-          {...getProps('gender')}
-        >
-          {genders.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+
         <LoadingButton
           endIcon={<SendIcon />}
           loading={formik.isSubmitting}

@@ -21,6 +21,7 @@ exports.register = asyncHandler(async (req, res, next) => {
   const confirmEmailToken = user.generateEmailConfirmToken();
 
   // Create reset url
+  const host=req.headers.host
   const confirmEmailURL = `${req.protocol}://${req.get(
     'host'
   )}/api/v1/auth/confirmemail?token=${confirmEmailToken}`;

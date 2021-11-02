@@ -43,10 +43,7 @@ const profileFormValidationSchema = Yup.object().shape({
         return len >= 6 ? true : false;
       }
     )
-    .required('Username is required'),
-  gender: Yup.mixed()
-    .oneOf(['male', 'female', 'other'])
-    .required('Gender is required!'),
+    .required('Username is required'), 
 });
 
 export { profileFormValidationSchema };
