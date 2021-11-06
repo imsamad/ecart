@@ -21,7 +21,7 @@ export default index;
 export const getServerSideProps = withSession(async function (ctx) {
   const { req } = ctx;
 
-  const { token } = req.session.get('user');
+  const token = req.session.get('user')?.token;
   if (!token) {
     return {
       redirect: {

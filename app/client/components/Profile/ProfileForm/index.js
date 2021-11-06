@@ -4,41 +4,97 @@ import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
-import MenuItem from '@mui/material/MenuItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { Typography } from '@mui/material';
+import MuiLink from '@mui/material/Link';
+import fetchJson from '../../../lib/fetchJson';
 import LinearProgress from '@mui/material/LinearProgress';
-
-import { profileFormValidationSchema as validationSchema } from './FormModal';
+import { Alert } from '@mui/material';
+import {
+  profileFormValidationSchema as emailEditUnameSchema,
+  editPasswordValidationSchema as pwdEditSchema,
+} from './FormModal';
 import { updateProfile } from '../../../redux/actions/profileAction';
+import PwdField from '../../SignInUp/PwdField';
 
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 const AccountForm = () => {
-  const { user, errMsg, error } = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
+  const { user, errMsg, error, emailUpdated } = useSelector(
+    (state) => state.profile
+  );
 
-  const onSubmit = (value, action) => {
-    dispatch(updateProfile(value));
-    action.setSubmitting(false);
+  const [headMsg, setHeadMsg] = React.useState(null);
+
+  const [editPwd, setEditPwd] = React.useState(false);
+  const [editDetails, setEditDetails] = React.useState(true);
+
+  const dispatch = useDispatch();
+  const changeEmailUname = async (value, action) => {
+    await dispatch(updateProfile(value));
+    formik.setSubmitting(false);
+    formik.resetForm();
+    setEditPwd(false);
+    setEditDetails(false);
+  };
+  const changePwd = async (value, action) => {
+    try {
+      const axiosObj = (data) => ({
+        url: `${process.env.NEXT_PUBLIC_API_URL}/auth/updatepassword`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+        data: data,
+      });
+      await fetchJson(axiosObj(value));
+
+      formik.setSubmitting(false);
+      formik.resetForm();
+      setEditPwd(false);
+      setEditDetails(false);
+
+      setHeadMsg({
+        success: true,
+        msg: 'Password Updated.',
+      });
+    } catch (err) {
+      setHeadMsg({
+        error: true,
+        msg: err.message,
+      });
+    }
   };
 
+  const onSubmit = editPwd ? changePwd : changeEmailUname;
+  const validationSchema = editPwd ? pwdEditSchema : emailEditUnameSchema;
   const formik = useFormik({
     initialValues: {
       username: user.username,
       email: user.email,
     },
-    validationSchema,
-    onSubmit,
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: onSubmit,
   });
-
   const getProps = (name) => ({
+    name: name,
+    id: name,
     value: formik.values[name],
     onChange: formik.handleChange,
     error: Boolean(formik.errors[name]),
     helperText: formik.errors[name],
   });
 
-  const [disabled, setDisabled] = React.useState(true);
+  const toggleEditPwd = () => {
+    setEditPwd(!editPwd);
+  };
+
+  const toggleEditDetails = () => {
+    setEditDetails(!editDetails);
+  };
 
   return (
     <Box
@@ -53,36 +109,93 @@ const AccountForm = () => {
           {errMsg}
         </Typography>
       )}
+      {emailUpdated && (
+        <Alert severity="info" sx={{ m: 2 }}>
+          {emailUpdated.startsWith('http') ? (
+            <a href={emailUpdated} target="_blank">
+              Confirm your email
+            </a>
+          ) : (
+            emailUpdated
+          )}
+        </Alert>
+      )}
+      {headMsg && (
+        <Alert
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setHeadMsg(null);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          severity={headMsg.error ? 'error' : 'success'}
+          sx={{ m: 2 }}
+        >
+          {headMsg.msg}
+        </Alert>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          !disabled && formik.handleSubmit();
+          formik.handleSubmit(e);
         }}
       >
+        {!editPwd && (
+          <TextField
+            fullWidth
+            size="small"
+            margin="dense"
+            label="User Name"
+            {...getProps('username')}
+          />
+        )}
         <TextField
           fullWidth
-          name="username"
           size="small"
           margin="dense"
-          id="username"
-          label="User Name"
-          {...getProps('username')}
-        />
-        <TextField
-          fullWidth
-          name="email"
-          size="small"
-          margin="dense"
-          id="email"
           label="Email"
+          disabled={editPwd}
           {...getProps('email')}
         />
-
+        {editPwd && (
+          <>
+            <PwdField
+              formik={formik}
+              identifier="currentPassword"
+              label="Old password"
+              variant="outlined"
+              size="small"
+            />
+            <PwdField
+              formik={formik}
+              identifier="newPassword"
+              label="New password"
+              variant="outlined"
+              size="small"
+            />
+          </>
+        )}
+        <Typography align="right" sx={{ my: 1 }}>
+          <MuiLink
+            underline="hover"
+            component="button"
+            type="button"
+            onClick={toggleEditPwd}
+          >
+            Edit Password
+          </MuiLink>
+        </Typography>
         <LoadingButton
           endIcon={<SendIcon />}
           loading={formik.isSubmitting}
           loadingPosition="end"
-          disabled={formik.isSubmitting || disabled}
+          disabled={formik.isSubmitting || editDetails}
           type="submit"
           variant="contained"
           size="small"
@@ -93,14 +206,14 @@ const AccountForm = () => {
         </LoadingButton>
         <LoadingButton
           disableElevation
-          onClick={() => setDisabled(!disabled)}
+          onClick={toggleEditDetails}
           endIcon={<EditIcon />}
           // loading={true}
           loadingPosition="end"
           variant="contained"
           size="small"
         >
-          {disabled ? 'Edit' : 'No I m ok'}
+          {editDetails ? 'Edit' : 'No I m ok'}
         </LoadingButton>
       </form>
     </Box>

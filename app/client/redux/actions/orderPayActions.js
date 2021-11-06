@@ -25,7 +25,6 @@ export const payOrder = (orderId, paymentResult) => async (dispatch) => {
     const {
       data: { order },
     } = await fetchJson(await axios(orderId, paymentResult));
-    console.log('Data payOrder', order);
     dispatch({
       type: ORDER_PAY_SUCC,
       payload: {

@@ -13,7 +13,12 @@ const profileReducer = (state = { user: {} }, action) => {
     case PROFILE_REQ:
       return { ...state, loading: true, error: false };
     case PROFILE_SUCC:
-      return { ...state, loading: false, user: payload };
+      return {
+        ...state,
+        loading: false,
+        user: payload.user,
+        emailUpdated: payload.emailUpdated,
+      };
     case PROFILE_ERR:
       return { ...state, loading: false, error: true, errMsg: payload };
     default:

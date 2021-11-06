@@ -1,8 +1,6 @@
 import { TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import React from 'react';
 const CartTableHead = () => {
-  // console.log('cart/CartTableHead');
-
   return (
     <TableHead>
       <TableRow>

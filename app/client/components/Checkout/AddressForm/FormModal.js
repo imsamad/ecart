@@ -54,9 +54,7 @@ export const AddressFormModel = {
 
 export const validationSchema = Yup.object().shape({
   // FullName
-  [AddressFormModel.fullName.name]: Yup.string(
-    AddressFormModel.fullName.stringErrorMsg
-  )
+  fullName: Yup.string(AddressFormModel.fullName.stringErrorMsg)
     .required(AddressFormModel.fullName.requiredErrorMsg)
     .min(
       AddressFormModel.fullName.minLength,

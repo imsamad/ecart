@@ -7,13 +7,13 @@ import {
   Typography,
   FormControlLabel,
 } from '@mui/material';
+import * as Yup from 'yup';
 import React from 'react';
 import { Box } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { addPaymentMethod } from '../../../redux/actions/cartActions';
-import { validationSchema } from './FormModals/PayMethod';
 
 const Pay = ({ handleNext, handleBack }) => {
   const { paymentMethod } = useSelector((state) => state.cart);
@@ -25,7 +25,11 @@ const Pay = ({ handleNext, handleBack }) => {
 
   const formik = useFormik({
     initialValues: { payMethod: paymentMethod },
-    validationSchema: validationSchema,
+    validationSchema: Yup.object().shape({
+      payMethod: Yup.string('Select your pay method').required(
+        'Payment Method is required'
+      ),
+    }),
     onSubmit: handleSubmit,
   });
   return (
@@ -54,10 +58,12 @@ const Pay = ({ handleNext, handleBack }) => {
                 <FormControlLabel
                   value="stripe"
                   control={<Radio />}
+                  disabled
                   label="Stripe"
                 />
                 <FormControlLabel
                   value="payTm"
+                  disabled
                   control={<Radio />}
                   label="PayTM"
                 />

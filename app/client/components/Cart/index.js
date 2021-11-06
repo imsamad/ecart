@@ -26,7 +26,7 @@ const index = ({ fromCheckoutPage }) => {
         Card Is Empty
       </Typography>
       <Link href="/">
-        <Button color="error" variant="contained" size="small">
+        <Button color="info" variant="contained" size="small" disableElevation>
           Back To Shopping
         </Button>
       </Link>

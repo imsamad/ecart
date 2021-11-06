@@ -7,40 +7,34 @@ import {
   Paper,
   TextField,
   DialogContentText,
-  Link,
-  IconButton,
-  InputLabel,
-  InputAdornment,
-  FormHelperText,
-  FormControl,
-  Input,
-  Typography,
   LinearProgress,
+  Alert,
+  Typography,
 } from '@mui/material';
+import MuiLink from '@mui/material/Link';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import SendIcon from '@mui/icons-material/Send';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import useUser from '../../lib/useUser';
 import loginFun from '../../lib/loginFun';
 import { signInModel, signUpModel } from './SignInUpFormModel';
-// import { useUICtx } from '../../UICtx';
+import PasswordField from './PwdField';
 export default function LoginForm() {
   const [isSignIn, setIsSignIn] = useState(true);
-  const [headError, setHeadError] = useState(null);
+  const [headMsg, setHeadMeg] = useState(null);
   const router = useRouter();
   const redirectTo = router?.query?.redirectTo;
+
   const { mutateUser } = useUser({
     redirectTo: redirectTo ? redirectTo : '/profile',
     redirectIfFound: true,
   });
 
-  // const { snackBar } = useUICtx();
   const handleSubmit = (values, action) => {
-    // console.log('values', values);
-    loginFun(values, action, isSignIn, mutateUser, setHeadError);
+    loginFun(values, action, isSignIn, mutateUser, setHeadMeg);
   };
 
   const initialValues = isSignIn
@@ -55,14 +49,13 @@ export default function LoginForm() {
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
-    validateOnChange: false,
+    validateOnChange: true,
+    enableReinitialize: true,
   });
-
-  const formLabel = isSignIn ? 'Sign In' : 'Sign Up';
-
+  let formLabel = isSignIn ? 'Sign In' : 'Sign Up';
   const switchForm = () => {
-    formik.setTouched({});
-    formik.setErrors({});
+    setHeadMeg(null);
+    formik.resetForm({});
     setIsSignIn(!isSignIn);
   };
 
@@ -79,11 +72,25 @@ export default function LoginForm() {
       {formik.isSubmitting && <LinearProgress />}
       <DialogTitle sx={{ textAlign: 'center' }}>{formLabel}</DialogTitle>
 
-      <Typography color="rgba(255,0,0,0.7)" align="center">
-        {headError && headError}
-      </Typography>
+      {headMsg &&
+        (headMsg.register ? (
+          <Alert severity="success" sx={{ mx: 4 }}>
+            {headMsg.msg.startsWith('http') ? (
+              <a href={headMsg.msg} target="_blank">
+                Confirm your email
+              </a>
+            ) : (
+              headMsg.msg
+            )}
+          </Alert>
+        ) : (
+          <Alert severity="error" sx={{ mx: 4 }}>
+            {headMsg.msg}
+          </Alert>
+        ))}
+
       <DialogContent>
-        <Box sx={{ m: 1 }} noValidate autoComplete="off">
+        <Box sx={{ m: 1 }} noValidate>
           <form>
             {!isSignIn && (
               <TextField
@@ -95,8 +102,10 @@ export default function LoginForm() {
                 name="username"
                 value={formik.values.username}
                 onChange={formik.handleChange}
-                error={Boolean(formik.errors.username)}
-                helperText={formik.errors.username}
+                error={
+                  formik.touched.username && Boolean(formik.errors.username)
+                }
+                helperText={formik.touched.username && formik.errors.username}
               />
             )}
             <TextField
@@ -108,26 +117,33 @@ export default function LoginForm() {
               name="email"
               value={formik.values.email}
               onChange={formik.handleChange}
-              error={Boolean(formik.errors.email)}
-              helperText={formik.errors.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
-            <PasswordField formik={formik} />
+            <PasswordField formik={formik} identifier="password" />
           </form>
         </Box>
+        <Typography align="right" sx={{ my: 1 }}>
+          <Link href="/forgotpassword">
+            <MuiLink underline="hover" component="button">
+              Forget Password
+            </MuiLink>
+          </Link>
+        </Typography>
         <DialogContentText sx={{ mt: 4 }}>
           {isSignIn ? (
             <>
               Not Account? {'  '}
-              <Link href="#" underline="always" onClick={switchForm}>
+              <MuiLink href="#" underline="always" onClick={switchForm}>
                 Register
-              </Link>
+              </MuiLink>
             </>
           ) : (
             <>
               Already account. {'  '}
-              <Link href="#" underline="always" onClick={switchForm}>
+              <MuiLink href="#" underline="always" onClick={switchForm}>
                 Login
-              </Link>
+              </MuiLink>
             </>
           )}
         </DialogContentText>
@@ -149,37 +165,3 @@ export default function LoginForm() {
     </Paper>
   );
 }
-
-const PasswordField = ({ formik }) => {
-  const [showPassword, setShowPasword] = useState(false);
-  const isError = formik.touched.password && Boolean(formik.errors.password);
-  return (
-    <FormControl fullWidth error={isError} margin="normal" variant="standard">
-      <InputLabel htmlFor="password" error={isError}>
-        Password
-      </InputLabel>
-      <Input
-        name="password"
-        id="password"
-        type={showPassword ? 'text' : 'password'}
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setShowPasword(!showPassword)}
-              onMouseDown={(e) => e.preventDefault()}
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        }
-        error={isError}
-      />
-      <FormHelperText id="password-helper-text" error={true}>
-        {formik.touched.password && formik.errors.password}
-      </FormHelperText>
-    </FormControl>
-  );
-};

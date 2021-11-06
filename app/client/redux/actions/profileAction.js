@@ -19,18 +19,18 @@ const axios = async (data) => {
   };
 };
 
-export const updateProfile = (data) => async (dispatch) => {
+export const updateProfile = (userData) => async (dispatch) => {
   try {
     // can check if data in getState.profile === data
     dispatch({ type: PROFILE_REQ });
-    const {
-      data: { user, noChange },
-    } = await fetchJson(await axios(data));
-    !noChange &&
-      dispatch({
+    const { data } = await fetchJson(await axios(userData));
+    const { user, profileUpdated, emailUpdated } = data;
+
+    profileUpdated &&
+      (await dispatch({
         type: PROFILE_SUCC,
-        payload: user,
-      });
+        payload: { user, emailUpdated },
+      }));
   } catch (err) {
     dispatch({ type: PROFILE_ERR, payload: 'Invalid data' });
   }

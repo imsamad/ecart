@@ -6,10 +6,11 @@ import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Link from 'next/link';
 import { getOrders } from '../../../redux/actions/myOrdersAction';
 import OrderRow from './OrderRow';
 
@@ -19,7 +20,6 @@ export default function index() {
   React.useEffect(() => {
     dispatch(getOrders());
   }, []);
-  // return 'ok';
   return (
     <Box
       sx={{ p: 1, border: 1, borderRadius: 2, borderColor: 'secondary.light' }}
@@ -28,7 +28,7 @@ export default function index() {
         My Orders
       </Typography>
 
-      {loading || orders?.length === 0 ? (
+      {loading ? (
         <LinearProgress />
       ) : (
         <TableContainer>
@@ -48,9 +48,22 @@ export default function index() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
-                <OrderRow order={order} key={order.id} />
-              ))}
+              {orders.length ? (
+                orders.map((order) => <OrderRow order={order} key={order.id} />)
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <Typography align="center" gutterBottom variant="h6">
+                      No order exist.{' '}
+                      <Link href="/">
+                        <Button color="info" variant="contained" size="small">
+                          Back To Shopping
+                        </Button>
+                      </Link>
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

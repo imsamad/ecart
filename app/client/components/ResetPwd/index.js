@@ -32,13 +32,13 @@ const index = () => {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const tokenUrl = `${api}/auth/confirmemail?token=${token}`;
+    const tokenUrl = `${api}/auth/resetpassword/${token}`;
     const validate = async () => {
       try {
         setLoading(true);
-        const { data } = await fetchJson(tokenUrl);
+        const { data } = await fetchJson({ url: tokenUrl, method: 'PUT' });
         // const cuk = await axiosObj(data, mutateUser);
-        await mutateUser(await fetchJson(axiosObj(data.user)));
+        await mutateUser(await fetchJson(axiosObj(data)));
       } catch (err) {
         setError('Invalid Token');
         setLoading(false);
@@ -70,7 +70,7 @@ const index = () => {
           <>
             <CircularProgress color="secondary" />
             <Typography variant="h6" align="center" sx={{ mt: 2 }}>
-              Confirming...
+              Reseting Password...
             </Typography>
           </>
         )}

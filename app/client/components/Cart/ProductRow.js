@@ -19,7 +19,6 @@ import {
 
 import QtyCounter from './QtyCounter';
 const ProductRow = ({ product }) => {
-  // console.log('cart/ProductRow');
   const dispatch = useDispatch();
   const remove = () => dispatch(removeProduct(product.product));
   const inc = () => dispatch(increment(product.product));

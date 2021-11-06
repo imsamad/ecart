@@ -1,7 +1,9 @@
 import fetchJson from './fetchJson';
-const login = async (values, action, isSignIn, mutateUser, setHeadError) => {
-  const body = { email: values.email, password: values.password };
 
+const login = async (values, action, isSignIn, mutateUser, setHeadMsg) => {
+  // Prepare req body object
+  const body = { email: values.email, password: values.password };
+  // If register forfirst time ,append username prop
   if (!isSignIn) body.username = values.username;
 
   const axios = (url, data) => ({
@@ -17,22 +19,33 @@ const login = async (values, action, isSignIn, mutateUser, setHeadError) => {
   API_URL = isSignIn ? `${API_URL}/auth/login` : `${API_URL}/auth/register`;
 
   try {
-    const data = await fetchJson(axios(API_URL, body));
-    mutateUser(await fetchJson(axios('/api/user', data)));
-    action.resetForm();
-    // snackBar.open({ body: `${data.email} Logged In...` });
+    const { data } = await fetchJson(axios(API_URL, body));
+
+    if (!isSignIn) {
+      setHeadMsg({
+        register: true,
+        msg: data.msg,
+      });
+      action.resetForm();
+    } else {
+      // set cookie
+      mutateUser(await fetchJson(axios('/api/user', data.user)));
+      action.resetForm();
+    }
   } catch (error) {
-    const doHave = (val) => error.message.indexOf(val) > -1;
     action.setSubmitting(false);
-    if (doHave('Email') || doHave('Email')) {
+    const doInclude = (val) => error.message.indexOf(val) > -1;
+
+    if (doInclude('Email') || doInclude('email')) {
       action.setErrors({ email: error.message });
-    } else if (doHave('Password') || doHave('password')) {
+    } else if (doInclude('Password') || doInclude('password')) {
       action.setErrors({ password: error.message });
-    } else if (doHave('Duplicate') || doHave('duplicate')) {
+    } else if (doInclude('Duplicate') || doInclude('duplicate')) {
       action.setErrors({ email: 'This email already taken.' });
     } else {
-      setHeadError('Invalid credential,Try Again...!');
+      setHeadMsg({ error: true, msg: 'Invalid credential,Try Again...!' });
     }
   }
 };
+
 export default login;

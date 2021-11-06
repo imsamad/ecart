@@ -1,6 +1,6 @@
 import Profile from '../components/Profile';
-
 import withSession from '../lib/session';
+
 const profile = () => {
   return <Profile />;
 };

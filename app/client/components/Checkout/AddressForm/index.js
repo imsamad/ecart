@@ -3,7 +3,7 @@ import { Grid, Button, Typography, Paper, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { AddressFormModel, validationSchema } from './FormModals/AddressModal';
+import { AddressFormModel, validationSchema } from './FormModal.js';
 const fields = Object.keys(AddressFormModel);
 import { addAddress } from '../../../redux/actions/cartActions';
 
@@ -23,6 +23,7 @@ const index = ({ handleNext }) => {
     validateOnChange: true,
     enableReinitialize: false,
   });
+
   return (
     <Grid container spacing={2}>
       <Grid
@@ -52,6 +53,7 @@ const index = ({ handleNext }) => {
                   fullWidth
                   margin="normal"
                   size="small"
+                  autoFocus={true}
                   onChange={formik.handleChange}
                   error={Boolean(formik.errors[identifier])}
                   helperText={formik.errors[identifier]}

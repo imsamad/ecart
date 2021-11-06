@@ -124,6 +124,7 @@ exports.updateOrderToPaid = asyncHandler(async (req, res) => {
 // @access    Private
 exports.getMyOrders = asyncHandler(async (req, res, next) => {
   let orders = await Order.find({ user: req.user.id });
+
   res.status(200).json({
     success: true,
     data: { orders },

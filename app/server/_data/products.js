@@ -1,3 +1,4 @@
+const prods = require('./freeStrProducts');
 const products = [
   {
     _id: '614efc422f99612e84350b2e',
@@ -77,6 +78,7 @@ const products = [
     rating: 0,
     numReviews: 0,
   },
+  ...prods
 ];
 
 module.exports = products;

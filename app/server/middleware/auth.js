@@ -5,8 +5,6 @@ const User = require('../models/User');
 
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
-  const checkIsEmailConfirmed =
-    process.env.CONFIRM_USER === 'true' ? true : false;
   let token;
   if (
     req.headers.authorization &&
@@ -30,10 +28,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = await User.findById(decoded.id);
-    if (checkIsEmailConfirmed && !req.user.isEmailConfirmed)
-      return next(
-        new ErrorResponse('Please, get your e-mail account confirm.', 401)
-      );
 
     next();
   } catch (err) {

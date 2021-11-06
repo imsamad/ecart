@@ -5,12 +5,15 @@ import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { useSelector } from 'react-redux';
+import Link from 'next/link';
+import { Box } from '@mui/system';
 
-import AddressForm from './Forms/AddressForm';
-import PaymentForm from './Forms/PaymentForm';
+import AddressForm from './AddressForm';
+import PaymentForm from './PaymentForm';
 import ReviewOrder from './ReviewOrder';
-import Cart from '../Cart';
-import StepBtn from './StepBtn';
+import CartReview from './CartReview';
+import { Button } from '@mui/material';
 
 const steps = [
   'Select a delivery address',
@@ -20,6 +23,8 @@ const steps = [
 ];
 
 export default function VerticalLinearStepper() {
+  const { cartItems } = useSelector((state) => state.cart);
+
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -37,12 +42,7 @@ export default function VerticalLinearStepper() {
       case 1:
         return <PaymentForm handleNext={handleNext} handleBack={handleBack} />;
       case 2:
-        return (
-          <>
-            <Cart fromCheckoutPage />
-            <StepBtn handleBack={handleBack} handleNext={handleNext} />
-          </>
-        );
+        return <CartReview handleBack={handleBack} handleNext={handleNext} />;
       case 3:
         return <ReviewOrder handleNext={handleNext} handleBack={handleBack} />;
       default:
@@ -66,22 +66,49 @@ export default function VerticalLinearStepper() {
         <Typography variant="h4" align="center">
           Checkout
         </Typography>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((step, index) => (
-            <Step key={step}>
-              <StepLabel
-                optional={
-                  index === steps.length - 1 ? (
-                    <Typography variant="caption">Last step</Typography>
-                  ) : null
-                }
+        {cartItems.length === 0 ? (
+          <Box
+            sx={{
+              maxWidth: 'sm',
+              mx: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" align="center" gutterBottom>
+              Your Cart Is Empty
+            </Typography>
+            <Link href="/">
+              <Button
+                color="info"
+                variant="contained"
+                size="small"
+                disableElevation
               >
-                {step}
-              </StepLabel>
-              <StepContent>{renderComponent(index)}</StepContent>
-            </Step>
-          ))}
-        </Stepper>
+                Back To Shopping
+              </Button>
+            </Link>
+          </Box>
+        ) : (
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((step, index) => (
+              <Step key={step}>
+                <StepLabel
+                  optional={
+                    index === steps.length - 1 ? (
+                      <Typography variant="caption">Last step</Typography>
+                    ) : null
+                  }
+                >
+                  {step}
+                </StepLabel>
+                <StepContent>{renderComponent(index)}</StepContent>
+              </Step>
+            ))}
+          </Stepper>
+        )}
       </Grid>
     </Grid>
   );

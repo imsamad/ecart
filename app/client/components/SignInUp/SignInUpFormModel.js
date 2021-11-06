@@ -29,62 +29,61 @@ export const FormModel = {
 };
 
 const signInInitialValues = {
-  [FormModel.email.name]: 'user@gmail.com',
-  [FormModel.password.name]: '12345678',
+  email: 'user@gmail.com',
+  password: '12345678',
 };
 
 const signUpInitialValues = {
-  [FormModel.username.name]: 'User Account',
-  [FormModel.email.name]: 'user@gmail.com',
-  [FormModel.password.name]: '12345678',
+  username: 'User Account',
+  email: 'user@gmail.com',
+  password: '12345678',
 };
 
 const signInValidationSchema = Yup.object().shape({
-  [FormModel.email.name]: Yup.string(FormModel.email.stringErrorMsg)
-    .email(FormModel.email.validErrorMsg)
-    .required(FormModel.email.requiredErrorMsg),
+  email: Yup.string('Enter your password')
+    .email('Enter a valid email')
+    .required('Email is required'),
 
-  [FormModel.password.name]: Yup.string(FormModel.password.stringErrorMsg)
-    .min(FormModel.password.minLength, FormModel.password.minLengthErrorMsg)
+  password: Yup.string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
     .test(
-      FormModel.password.name,
-      FormModel.password.minLengthErrorMsg,
+      'password',
+      'Password should be of minimum 8 characters length',
+      (value) => {
+        const len = value?.trim().split(' ').join('').length;
+        return len >= 8 ? true : false;
+      }
+    )
+    .required('Password is required'),
+});
+
+const signUpValidationSchema = Yup.object().shape({
+  email: Yup.string('Enter your password')
+    .email('Enter a valid email')
+    .required('Email is required'),
+
+  password: Yup.string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .test(
+      'password',
+      'Password should be of minimum 8 characters length',
+      (value) => {
+        const len = value?.trim().split(' ').join('').length;
+        return len >= 8 ? true : false;
+      }
+    )
+    .required('Password is required'),
+  username: Yup.string('Enter your Username')
+    .min(6, 'Username should be of minimum 6 characters length')
+    .test(
+      'username',
+      'Username should be of minimum 6 characters length',
       (value) => {
         const len = value?.trim().split(' ').join('').length;
         return len >= 6 ? true : false;
       }
     )
-    .required(FormModel.password.requiredErrorMsg),
-});
-
-const signUpValidationSchema = Yup.object().shape({
-  [FormModel.email.name]: Yup.string(FormModel.email.stringErrorMsg)
-    .email(FormModel.email.validErrorMsg)
-    .required(FormModel.email.requiredErrorMsg),
-
-  [FormModel.password.name]: Yup.string(FormModel.password.stringErrorMsg)
-    .min(FormModel.password.minLength, FormModel.password.minLengthErrorMsg)
-    .test(
-      FormModel.password.name,
-      FormModel.password.minLengthErrorMsg,
-      (value) => {
-        const len = value?.trim().split(' ').join('').length;
-        return len >= FormModel.username.minLength ? true : false;
-      }
-    )
-    .required(FormModel.password.requiredErrorMsg),
-
-  [FormModel.username.name]: Yup.string(FormModel.username.stringErrorMsg)
-    .min(FormModel.username.minLength, FormModel.username.minLengthErrorMsg)
-    .test(
-      FormModel.username.name,
-      FormModel.username.minLengthErrorMsg,
-      (value) => {
-        const len = value?.trim().split(' ').join('').length;
-        return len >= FormModel.username.minLength ? true : false;
-      }
-    )
-    .required(FormModel.username.requiredErrorMsg),
+    .required('Username is required'),
 });
 
 const signUpModel = {

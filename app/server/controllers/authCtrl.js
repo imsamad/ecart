@@ -3,6 +3,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
 const User = require('../models/User');
+
 // @desc      Register user
 // @route     POST /api/v1/auth/register
 // @access    Public
@@ -14,29 +15,41 @@ exports.register = asyncHandler(async (req, res, next) => {
     username,
     email,
     password,
-    role: role ?? 'user',
+    role: role ?? 'customer',
   });
-  /*
-  // grab token and send to email
+
+  //  grab token and send to email
   const confirmEmailToken = user.generateEmailConfirmToken();
 
-  // Create reset url
-  const host=req.headers.host
-  const confirmEmailURL = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/auth/confirmemail?token=${confirmEmailToken}`;
+  //  Create reset url
+  // const host = req.headers.host;
+  //const confirmEmailURL = `${req.protocol}://${req.headers.host}/confirmemail?token=${confirmEmailToken}`;
+
+  const confirmEmailURL = `http://localhost:3000/confirmemail?token=${confirmEmailToken}`;
 
   const message = `You are receiving this email because you need to confirm your email address. Please make a GET request to: \n\n ${confirmEmailURL}`;
 
-  user.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false });
 
-  const sendResult = await sendEmail({
-    email: user.email,
-    subject: 'Email confirmation token',
-    message,
-  });
- */
-  sendTokenResponse(user, 200, res);
+  if (process.env.EMAIL_SERVICE === 'ON') {
+    const sendResult = await sendEmail({
+      email: user.email,
+      subject: 'Email confirmation token',
+      message,
+    });
+    return res.json({
+      success: true,
+      data: {
+        msg: `Go To ${confirmEmailURL} to  Confirm Email.`,
+        emailSent: true,
+      },
+    });
+  } else {
+    return res.json({
+      success: true,
+      data: { msg: confirmEmailURL, emailSent: false },
+    });
+  }
 });
 
 // @desc      Login user
@@ -52,7 +65,9 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email, isEmailConfirmed: true }).select(
+    '+password'
+  );
   // console.log('user found', user);
   if (!user) {
     return next(new ErrorResponse('Invalid Email', 401));
@@ -104,30 +119,57 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  const fieldsToUpdate = {
-    username: req.body.username,
-    email: req.body.email,
-    // gennder
-    // dob
-  };
+  // const fieldsToUpdate = {
+  //   username: req.body.username,
+  //   email: req.body.email,
+  //   // gennder
+  //   // dob
+  // };
 
-  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
-    new: true,
-    runValidators: true,
-  });
-  if (
-    user.username.toString() === req.body.username &&
-    req.body.email === user.email.toString()
-  ) {
-    return res.status(200).json({
-      success: true,
-      data: { user, noChange: true },
-    });
+  // const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+  //   new: true,
+  //   runValidators: true,
+  // });
+
+  let user = await User.findById(req.user.id);
+
+  let emailUpdated = req.body.email !== user.email.toString();
+  const uNameUpdated = req.body.username !== user.username.toString();
+  const profileUpdated = emailUpdated || uNameUpdated;
+  // console.log('emailUpdated', emailUpdated);
+  // console.log('uNameUpdated', uNameUpdated);
+  // console.log('profileUpdated', profileUpdated);
+
+  if (emailUpdated) {
+    user.emailToConfirm = req.body.email;
+    const confirmEmailToken = user.generateEmailConfirmToken();
+
+    const confirmEmailURL = `http://localhost:3000/confirmemail?token=${confirmEmailToken}`;
+
+    if (process.env.EMAIL_SERVICE === 'ON') {
+      const message = `You are receiving this email because you need to confirm your email address. Please make a GET request to: \n\n ${confirmEmailURL}`;
+
+      const sendResult = await sendEmail({
+        email: user.email,
+        subject: 'Email confirmation token',
+        message,
+      });
+
+      emailUpdated = `Go To ${confirmEmailURL} to  Confirm Email.`;
+    } else {
+      emailUpdated = confirmEmailURL;
+    }
   }
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
+  if (uNameUpdated) {
+    user.username = req.body.username;
+  }
+  if (profileUpdated) {
+    user = await user.save();
+  }
+
+  const xtraInfp = { profileUpdated, emailUpdated };
+
+  sendTokenResponse(user, 200, res, xtraInfp);
 });
 
 // @desc      Update password
@@ -163,22 +205,35 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // Create reset url
-  const resetUrl = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/auth/resetpassword/${resetToken}`;
+  // const resetUrl = `${req.protocol}://${req.get(
+  //   'host'
+  // )}/api/v1/auth/resetpassword/${resetToken}`;
+
+  const resetUrl = `http://localhost:3000/resetpassword?token=${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Password reset token',
-      message,
-    });
-
-    res.status(200).json({ success: true, data: 'Email sent' });
+    if (process.env.EMAIL_SERVICE === 'ON') {
+      const sendResult = await sendEmail({
+        email: user.email,
+        subject: 'Email confirmation token',
+        message,
+      });
+      return res.json({
+        success: true,
+        data: {
+          msg: `Go To ${resetUrl} to  Reset Email.`,
+          emailSent: true,
+        },
+      });
+    } else {
+      return res.json({
+        success: true,
+        data: { msg: resetUrl, emailSent: false },
+      });
+    }
   } catch (err) {
-    console.log(err);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -236,28 +291,30 @@ exports.confirmEmail = asyncHandler(async (req, res, next) => {
     .digest('hex');
 
   // get user by token
-  const user = await User.findOne({
+  let user = await User.findOne({
     confirmEmailToken,
-    isEmailConfirmed: false,
   });
-
   if (!user) {
     return next(new ErrorResponse('Invalid Token', 400));
   }
 
+  if (user.isEmailConfirmed && user.emailToConfirm) {
+    user.email = user.emailToConfirm;
+    user.emailToConfirm = undefined;
+  }
   // update confirmed to true
   user.confirmEmailToken = undefined;
   user.isEmailConfirmed = true;
 
   // save
-  user.save({ validateBeforeSave: false });
+  user = await user.save({ validateBeforeSave: false });
 
   // return token
   sendTokenResponse(user, 200, res);
 });
 
 // Get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = (user, statusCode, res, xtraInfo) => {
   // Create token
   const token = user.getSignedJwtToken();
 
@@ -274,9 +331,14 @@ const sendTokenResponse = (user, statusCode, res) => {
   // .cookie('token', token, options)
   res.status(statusCode).json({
     success: true,
-    token,
-    username: user.username,
-    role: user.role,
-    email: user.email,
+    data: {
+      user: {
+        token,
+        username: user.username,
+        role: user.role,
+        email: user.email,
+      },
+      ...xtraInfo,
+    },
   });
 };

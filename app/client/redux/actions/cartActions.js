@@ -32,11 +32,11 @@ export const removeProduct = (productId) => (dispatch, getState) => {
 export const addProduct =
   (productId, qty = 1) =>
   async (dispatch, getState) => {
-    // If product already in cart then simply do increment.
+    // If product already in cart then ....
     const existItem = getState()
       .cart.cartItems.map((p) => p.product)
       .indexOf(productId);
-
+    // ... simply do increment.
     if (existItem >= 0) {
       dispatch(increment(productId));
       // we could trigger snackbar from here also.

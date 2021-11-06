@@ -43,6 +43,7 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    emailToConfirm: String,
     twoFactorCode: String,
     twoFactorCodeExpire: Date,
     twoFactorEnable: {
