@@ -1,21 +1,27 @@
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import SingleOrder from '../../components/SingleOrder';
 import withSession from '../../lib/session';
 import fetchJson from '../../lib/fetchJson';
 
-import { initOrder } from '../../redux/actions/orderPayActions';
+import { initPayOrder } from '../../redux/actions/orderPayActions';
 
 const index = ({ data: order }) => {
   const dispatch = useDispatch();
-  dispatch(
-    initOrder({
-      isPaid: order?.isPaid,
-      paymentMethod: order.paymentMethod,
-      orderId: order?._id ?? order.id,
-    })
-  );
+
+  React.useEffect(() => {
+    dispatch(
+      initPayOrder({
+        isPaid: order?.isPaid,
+        paymentMethod: order.paymentMethod,
+        orderId: order?._id ?? order.id,
+      })
+    );
+  }, []);
+
   return <SingleOrder />;
 };
+
 export default index;
 
 export const getServerSideProps = withSession(async function (ctx) {

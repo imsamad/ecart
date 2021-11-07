@@ -19,6 +19,7 @@ const axios = async (orderId, data) => {
     data: data,
   };
 };
+
 export const payOrder = (orderId, paymentResult) => async (dispatch) => {
   try {
     dispatch({ type: ORDER_PAY_REQ });
@@ -39,7 +40,7 @@ export const payOrder = (orderId, paymentResult) => async (dispatch) => {
   }
 };
 
-export const initOrder =
+export const initPayOrder =
   ({ isPaid, paymentMethod, orderId }) =>
   (dispatch) => {
     dispatch({

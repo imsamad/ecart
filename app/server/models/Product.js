@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const slugify = require('slugify');
 const productSchema = mongoose.Schema(
   {
     name: {
@@ -52,10 +52,11 @@ const productSchema = mongoose.Schema(
 );
 
 productSchema.pre('save', function (next) {
-  const slug = this.slug
-    ? this.slug
-    : this.name?.toLowerCase().trim().split(' ').join('-');
-  this.slug = slug;
+  // const slug = this.slug
+  //   ? this.slug
+  //   : this.name?.toLowerCase().trim().split(' ').join('-');
+  // this.slug = slug;
+  this.slug = slugify(this.name, { lower: true });
   next();
 });
 

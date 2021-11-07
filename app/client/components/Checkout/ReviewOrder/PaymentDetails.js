@@ -2,7 +2,9 @@ import React from 'react';
 import { Typography, Grid } from '@mui/material';
 
 function PaymentDetails({ paymentMethod }) {
-  let payMeth = paymentMethod === 'pod' && 'Pay on Delivery';
+  let payMeth = 'PayPal';
+  if (payMeth === 'pod') payMeth = 'Pay On Delivery';
+
   return (
     <>
       <Typography variant="h6" gutterBottom>

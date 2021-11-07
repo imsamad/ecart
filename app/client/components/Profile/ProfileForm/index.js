@@ -160,7 +160,10 @@ const AccountForm = () => {
           size="small"
           margin="dense"
           label="Email"
-          disabled={editPwd}
+          InputProps={{
+            readOnly: {editPwd},
+          }}
+          // disabled={editPwd}
           {...getProps('email')}
         />
         {editPwd && (

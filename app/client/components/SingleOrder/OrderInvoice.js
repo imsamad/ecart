@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import cartDetails from '../../lib/cartDetails';
 import PayButton from './PayButton';
+
 const OrderInvoice = ({ order }) => {
   const { subTotal, shippingPrice, taxPrice, total } = cartDetails({
     orderInvoice: order,

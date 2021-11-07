@@ -1,13 +1,15 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 
-function ShippingDetails({
-  order: {
-    address: { pinCode, country, fullName, mobileNo, landmark, city, state },
-    deliveredAt,
-    isDelivered,
-  },
-}) {
+function ShippingDetails(props) {
+  const {
+    order: {
+      address: { pinCode, country, fullName, mobileNo, landmark, city, state },
+      deliveredAt,
+      isDelivered,
+    },
+  } = props;
+
   return (
     <>
       <Typography variant="h6" gutterBottom>

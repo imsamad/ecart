@@ -1,9 +1,10 @@
 import { Grid, Typography, Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import ProductDetails from './ProductDetails';
-import ShippingCard from './ShippingCard';
-import PaymentDetails from './PaymentCard';
+
+import ShippingDetails from './ShippingDetails';
+import PaymentDetails from './PaymentDetails';
 import OrderInvoice from './OrderInvoice';
+import ProductDetails from './ProductDetails';
 
 const product = () => {
   const { order } = useSelector((state) => state.order);
@@ -29,7 +30,7 @@ const product = () => {
         <Grid container>
           <Grid item xs={12} sm={12} md={6} sx={{ p: 2 }}>
             <Box sx={{ border: 1, p: 2, borderRadius: 4 }}>
-              <ShippingCard order={order} />
+              <ShippingDetails order={order} />
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={6} sx={{ p: 2 }}>

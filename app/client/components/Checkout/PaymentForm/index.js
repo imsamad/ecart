@@ -51,6 +51,7 @@ const Pay = ({ handleNext, handleBack }) => {
                 defaultValue={`${paymentMethod}`}
               >
                 <FormControlLabel
+                  disabled
                   value="pod"
                   control={<Radio />}
                   label="Pay On Delivery"

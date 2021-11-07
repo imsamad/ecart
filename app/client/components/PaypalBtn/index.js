@@ -27,13 +27,17 @@ function MyApp({ onSuccess, totalPrice, orderId }) {
       onSuccess(details);
     });
   };
+
   const onCancel = (data) => {
     console.log('onCancel', data);
   };
+
   const onError = (...args) => {
     console.log('onErrror ', args);
   };
+
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+
   return (
     <PayPalScriptProvider options={{ 'client-id': clientId }}>
       <PayPalButtons

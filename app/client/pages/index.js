@@ -1,18 +1,51 @@
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
 import fetchJson from '../lib/fetchJson';
 import ProductCard from '../components/ProductCard';
+import SearchBar from '../components/SearchBar';
+import HomeSkeleton from '../components/HomeSkeleton';
+import NotFound from '../components/NotFound';
+
+import { fetchProducts } from '../redux/actions/productAction';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 export default function Index() {
+  const dispatch = useDispatch();
+
   const { products } = useSelector((state) => state.products);
+
+  const router = useRouter();
+
+  const query = router.query;
+  const keyword = router.query.q;
+
+  React.useEffect(() => {
+    keyword && dispatch(fetchProducts(keyword));
+  }, [query]);
+
   return (
     <Grid container spacing={2} direction="row" justifyContent="center">
-      {products?.map((product) => (
-        <Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
-          <ProductCard product={product} />
+      <Grid xs={12} item>
+        <SearchBar />
+      </Grid>
+      {/* <HomeSkeleton /> */}
+
+      {products.length === 0 ? (
+        <Grid item xs={12}>
+          <NotFound keyword={keyword} />
         </Grid>
-      ))}
+      ) : (
+        products?.map((product) => (
+          <Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
+            <ProductCard product={product} />
+          </Grid>
+        ))
+      )}
     </Grid>
   );
 }

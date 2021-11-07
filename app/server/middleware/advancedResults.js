@@ -5,7 +5,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   const reqQuery = { ...req.query };
 
   // Fields to exclude
-  const removeFields = ['select', 'sort', 'page', 'limit'];
+  const removeFields = ['select', 'sort', 'page', 'limit', 'keyword', 'slug'];
 
   // Loop over removeFields and delete them from reqQuery
   removeFields.forEach((param) => delete reqQuery[param]);
@@ -19,8 +19,19 @@ const advancedResults = (model, populate) => async (req, res, next) => {
     (match) => `$${match}`
   );
 
+  queryStr = JSON.parse(queryStr);
+
+  if (req.query.keyword) {
+    queryStr.name = {
+      $regex: req.query.keyword,
+      $options: 'i',
+    };
+  }
+  if (req.query.slug) {
+    queryStr.slug = req.query.slug;
+  }
   // Finding resource
-  query = model.find(JSON.parse(queryStr));
+  query = model.find(queryStr);
 
   // Select Fields
   if (req.query.select) {

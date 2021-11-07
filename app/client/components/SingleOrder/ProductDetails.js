@@ -11,7 +11,6 @@ import TableRow from '@mui/material/TableRow';
 import ccyFormat from '../../lib/ccyFormat';
 
 function ProductsDetails({ order }) {
-  // return 'SingleProductDetails';
   return (
     <Box>
       <TableContainer>
