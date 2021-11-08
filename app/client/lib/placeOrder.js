@@ -13,7 +13,7 @@ const axios = async (method, data) => {
   };
 };
 
-const placeOrder = async (cart, redirectTo) => {
+const placeOrder = async (cart, redirectTo, setErr) => {
   const orderItems = cart.cartItems.map((item) => ({
     product: item.product,
     qty: item.qty,
@@ -22,10 +22,13 @@ const placeOrder = async (cart, redirectTo) => {
   const shippingAddress = cart.shippingAddress;
   const paymentMethod = cart.paymentMethod;
   const data = { orderItems, shippingAddress, paymentMethod };
-  const {
-    data: { order },
-  } = await fetchJson(await axios('POST', data));
-
-  redirectTo(order.id);
+  try {
+    const {
+      data: { order },
+    } = await fetchJson(await axios('POST', data));
+    redirectTo(order.id);
+  } catch (err) {
+    setErr('Unable to place order ,try again!');
+  }
 };
 export default placeOrder;

@@ -1,16 +1,16 @@
-const notClient = typeof window !== 'undefined';
+const isNotServer = typeof window !== 'undefined';
 const cartItemFromStorage =
-  notClient && localStorage.getItem('cartItems')
+  isNotServer && localStorage.getItem('cartItems')
     ? JSON.parse(localStorage.getItem('cartItems'))
     : [];
 
 const paymentMethodFromStorage =
-  notClient && localStorage.getItem('paymentMethod')
+  isNotServer && localStorage.getItem('paymentMethod')
     ? JSON.parse(localStorage.getItem('paymentMethod'))
     : 'pod';
 
 const shippingAddressFromStorage =
-  notClient && localStorage.getItem('shippingAddress')
+  isNotServer && localStorage.getItem('shippingAddress')
     ? JSON.parse(localStorage.getItem('shippingAddress'))
     : {};
 

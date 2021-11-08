@@ -29,7 +29,6 @@ const AccountForm = () => {
 
   const [editPwd, setEditPwd] = React.useState(false);
   const [editDetails, setEditDetails] = React.useState(true);
-
   const dispatch = useDispatch();
   const changeEmailUname = async (value, action) => {
     await dispatch(updateProfile(value));
@@ -161,7 +160,7 @@ const AccountForm = () => {
           margin="dense"
           label="Email"
           InputProps={{
-            readOnly: {editPwd},
+            readOnly: editPwd,
           }}
           // disabled={editPwd}
           {...getProps('email')}

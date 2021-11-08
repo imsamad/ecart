@@ -7,9 +7,9 @@ import {
   CART_SAVE_PAYMENT_METHOD,
 } from '../constants/cartConst';
 
-import initState from '../initialState';
+import initialState from '../initialState';
 
-const cartReducer = (state = { ...initState }, action) => {
+const cartReducer = (state = { ...initialState }, action) => {
   const { type, payload } = action;
   switch (type) {
     case CART_ADD_ITEM:

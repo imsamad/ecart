@@ -3,14 +3,11 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 
 import theme from '../components/mui/theme';
-
 import Layout from '../components/Layout';
-
 import createEmotionCache from '../components/mui/createEmotionCache';
-
 import { useStore } from '../redux/store';
 
 const clientSideEmotionCache = createEmotionCache();
@@ -40,11 +37,11 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
+        <ReduxProvider store={store}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </Provider>
+        </ReduxProvider>
       </ThemeProvider>
     </CacheProvider>
   );

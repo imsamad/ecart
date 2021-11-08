@@ -2,12 +2,10 @@ import Box from '@mui/system/Box';
 import Container from '@mui/material/Container';
 import Copyright from '../Copyright';
 import Header from '../Header';
-// import UIContextProvider from '../../UICtx';
 import SnackBar from '../SnackBar';
 import { SnackbarProvider } from 'notistack';
 const index = (props) => {
   return (
-    //  <UIContextProvider>
     <Box
       sx={{
         overflow: 'hidden',
@@ -30,7 +28,6 @@ const index = (props) => {
         <Copyright />
       </Box>
     </Box>
-    //  </UIContextProvider>
   );
 };
 
