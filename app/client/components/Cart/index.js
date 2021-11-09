@@ -10,6 +10,7 @@ import cartDetails from '../../lib/cartDetails';
 
 const index = ({ fromCheckoutPage }) => {
   const { cartItems } = useSelector((state) => state.cart);
+  console.log('cart');
   const cartInvoice = cartDetails(cartItems);
   return cartItems.length === 0 ? (
     <Box

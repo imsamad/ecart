@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const url = process.env.MONGO_URI;
 module.exports = () => {
-  console.log('urlurlurlurl', url);
   mongoose
     .connect(process.env.MONGO_URI, {
       useNewUrlParser: true,

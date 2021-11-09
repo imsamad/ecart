@@ -8,7 +8,7 @@ module.exports = [
     countInStock: 25,
 
     category: "men's clothing",
-    image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+    image: '/images/bag.js',
 
     numReviews: 0,
     rating: 5,
@@ -20,10 +20,8 @@ module.exports = [
       'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.',
     brand: 'Apple',
     countInStock: 25,
-
     category: "men's clothing",
-    image:
-      'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
+    image: '/images/bwshirt.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -37,7 +35,7 @@ module.exports = [
     countInStock: 25,
 
     category: "men's clothing",
-    image: 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg',
+    image: '/images/khshirt.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -51,7 +49,7 @@ module.exports = [
     countInStock: 25,
 
     category: "men's clothing",
-    image: 'https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg',
+    image: '/images/blueshirt.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -65,7 +63,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'jewelery',
-    image: 'https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg',
+    image: '/images/chain.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -79,7 +77,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'jewelery',
-    image: 'https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg',
+    image: '/images/hchain.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -93,7 +91,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'jewelery',
-    image: 'https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg',
+    image: '/images/dchain.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -107,7 +105,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'jewelery',
-    image: 'https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg',
+    image: '/images/dochain.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -121,7 +119,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'electronics',
-    image: 'https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg',
+    image: '/images/whhd.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -135,7 +133,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'electronics',
-    image: 'https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg',
+    image: '/images/ssd.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -149,7 +147,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'electronics',
-    image: 'https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg',
+    image: '/images/sp.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -163,7 +161,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'electronics',
-    image: 'https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_.jpg',
+    image: '/images/wdc.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -177,7 +175,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'electronics',
-    image: 'https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg',
+    image: '/images/lcd.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -191,7 +189,7 @@ module.exports = [
     countInStock: 25,
 
     category: 'electronics',
-    image: 'https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg',
+    image: '/images/qlcd.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -205,7 +203,7 @@ module.exports = [
     countInStock: 25,
 
     category: "women's clothing",
-    image: 'https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg',
+    image: '/images/bj.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -219,7 +217,7 @@ module.exports = [
     countInStock: 25,
 
     category: "women's clothing",
-    image: 'https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg',
+    image: '/images/blj.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -233,7 +231,7 @@ module.exports = [
     countInStock: 25,
 
     category: "women's clothing",
-    image: 'https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg',
+    image: '/images/bluej.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -247,7 +245,7 @@ module.exports = [
     countInStock: 25,
 
     category: "women's clothing",
-    image: 'https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg',
+    image: '/images/whj.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -261,7 +259,7 @@ module.exports = [
     countInStock: 25,
 
     category: "women's clothing",
-    image: 'https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg',
+    image: '/images/redj.jpg',
 
     numReviews: 0,
     rating: 5,
@@ -275,7 +273,7 @@ module.exports = [
     countInStock: 25,
 
     category: "women's clothing",
-    image: 'https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg',
+    image: '/images/blss.jpg',
 
     numReviews: 0,
     rating: 5,

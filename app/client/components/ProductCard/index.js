@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
   const sliceName = (str) => {
     return str.length > 20 ? str.substring(0, 19) + '...' : str;
   };
-  console.log('productproduct', product);
+
   return (
     <Box sx={{ position: 'relative' }}>
       <CardActionArea>

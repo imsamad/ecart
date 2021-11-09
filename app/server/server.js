@@ -15,7 +15,8 @@ const compression = require('compression');
 const cache = require('./middleware/cache');
 const errorHandler = require('./middleware/error');
 const notFound = require('./middleware/notFound');
-const connectDB = require('./config/db');
+// const connectDB = require('./config/db');
+const connectDB = require('./config/connectDB');
 const shouldCompress = require('./utils/shouldCompress');
 
 const app = express();
@@ -71,16 +72,26 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-let server;
-connectDB().then(() => {
-  server = app.listen(
-    PORT,
-    console.log(
-      `Server running in ${process.env.NODE_ENV} mode on http://localhost:${PORT}`
-        .yellow.bold
-    )
-  );
-});
+const connectToDBWithRetry = async () => {
+  let counter = 5;
+
+  try {
+    console.log('Conncet');
+    await connectDB();
+  } catch (err) {
+    console.log('Counter ', counter);
+    if (counter++ < 5) await connectDB();
+  }
+};
+connectToDBWithRetry();
+
+let server = app.listen(
+  PORT,
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on http://localhost:${PORT}`
+      .yellow.bold
+  )
+);
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
