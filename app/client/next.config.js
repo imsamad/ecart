@@ -1,8 +1,5 @@
 const withPwa = require('next-pwa');
 module.exports = withPwa({
-  images: {
-    domains: ['fakestoreapi.com'],
-  },
   pwa: {
     dest: 'public',
     swSrc: 'service-worker.js',

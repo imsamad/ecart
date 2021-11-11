@@ -12,8 +12,8 @@
     "server": "cd server &&  npm start",
     "client": "cd client &&  npm run build && npm start",
     "start": "concurrently -n 'server,client' -c 'green,blue'  \"npm run server\" \"npm run client\"",
-    "seed:i": "cd server && npm run data:i",
-    "seed:d": "cd server && npm run data:d"
+    "seed:i": "cd server && npm run seed:i",
+    "seed:d": "cd server && npm run seed:d"
   },
   "keywords": [],
   "author": "",

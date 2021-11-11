@@ -1,7 +1,5 @@
 const path = require('path');
 const express = require('express');
-// Load .env
-require('dotenv').config({ path: './config/.env' });
 const morgan = require('morgan');
 const colors = require('colors');
 const mongoSanitize = require('express-mongo-sanitize');

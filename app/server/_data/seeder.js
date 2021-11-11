@@ -1,13 +1,12 @@
 const colors = require('colors');
-require('dotenv').config({ path: './config/.env' });
-const connectDB = require('./config/db');
+const connectDB = require('../config/db');
 connectDB();
 
 // Load models
-const Product = require('./models/Product');
-const products = require('./_data/products.js');
-const User = require('./models/User');
-const users = require('./_data/users.js');
+const Product = require('../models/Product');
+const products = require('./products.js');
+const User = require('../models/User');
+const users = require('./users.js');
 // Import into DB
 const importData = async () => {
   try {
@@ -32,8 +31,10 @@ const deleteData = async () => {
   }
 };
 
-if (process.argv[2] === '-i') {
+if (process.argv[3] === '-i') {
+  // console.log('Import ');
   importData();
-} else if (process.argv[2] === '-d') {
+} else if (process.argv[3] === '-d') {
+  // console.log('Delete ');
   deleteData();
 }
