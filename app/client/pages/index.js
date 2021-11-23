@@ -1,20 +1,17 @@
-import React from 'react';
-import Grid from '@mui/material/Grid';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import React from "react";
+import Grid from "@mui/material/Grid";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
-import fetchJson from '../lib/fetchJson';
-import ProductCard from '../components/ProductCard';
-import SearchBar from '../components/SearchBar';
-import HomeSkeleton from '../components/HomeSkeleton';
-import NotFound from '../components/NotFound';
+import fetchJson from "../lib/fetchJson";
+import ProductCard from "../components/ProductCard";
+import SearchBar from "../components/SearchBar";
+import NotFound from "../components/NotFound";
 
-import { fetchProducts } from '../redux/actions/productAction';
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { fetchProducts } from "../redux/actions/productAction";
 
-export default function Index() {
+export default function index() {
   const dispatch = useDispatch();
 
   const { products } = useSelector((state) => state.products);
@@ -59,8 +56,8 @@ export const getStaticProps = async () => {
     props: {
       data: products,
       reduxData: {
-        reducerName: 'products',
-        fieldName: 'products',
+        reducerName: "products",
+        fieldName: "products",
       },
     },
   };

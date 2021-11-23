@@ -1,18 +1,18 @@
-import React from 'react';
-import withSession from '../lib/session';
+import React from "react";
 
-import Checkout from '../components/Checkout';
+import withSession from "../lib/session";
+import Checkout from "../components/Checkout";
 
-const checkout = () => {
+const index = () => {
   return <Checkout />;
 };
 
 export const getServerSideProps = withSession(async function ({ req, res }) {
-  const user = req.session.get('user');
+  const user = req.session.get("user");
   if (!user) {
     return {
       redirect: {
-        destination: '/login?redirectTo=checkout',
+        destination: "/login?redirectTo=checkout",
         permanent: false,
       },
     };
@@ -22,4 +22,4 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
     props: {},
   };
 });
-export default checkout;
+export default index;

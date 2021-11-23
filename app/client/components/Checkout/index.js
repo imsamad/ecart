@@ -1,28 +1,26 @@
-import * as React from 'react';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { useSelector } from 'react-redux';
-import Link from 'next/link';
-import { Box } from '@mui/system';
+import * as React from "react";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepContent from "@mui/material/StepContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { useSelector } from "react-redux";
 
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import ReviewOrder from './ReviewOrder';
-import CartReview from './CartReview';
-import { Button } from '@mui/material';
+import AddressForm from "./AddressForm";
+import PaymentForm from "./PaymentForm";
+import ReviewOrder from "./ReviewOrder";
+import CartReview from "./CartReview";
+import EmptyCart from "../EmptyCart";
 
 const steps = [
-  'Select a delivery address',
-  'Select Pay Option',
-  'Select Product',
-  'Review Order',
+  "Select a delivery address",
+  "Select Pay Option",
+  "Select Product",
+  "Review Order",
 ];
 
-export default function VerticalLinearStepper() {
+export default function index() {
   const { cartItems } = useSelector((state) => state.cart);
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -35,20 +33,8 @@ export default function VerticalLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const renderComponent = (index) => {
-    switch (index) {
-      case 0:
-        return <AddressForm handleNext={handleNext} />;
-      case 1:
-        return <PaymentForm handleNext={handleNext} handleBack={handleBack} />;
-      case 2:
-        return <CartReview handleBack={handleBack} handleNext={handleNext} />;
-      case 3:
-        return <ReviewOrder handleNext={handleNext} handleBack={handleBack} />;
-      default:
-        null;
-    }
-  };
+  const handlers = { handleNext, handleBack };
+
   return (
     <Grid container>
       <Grid
@@ -56,9 +42,9 @@ export default function VerticalLinearStepper() {
         xs={12}
         md={10}
         sx={{
-          m: 'auto',
+          m: "auto",
           border: 1,
-          borderColor: 'grey.400',
+          borderColor: "grey.400",
           p: 2,
           borderRadius: 2,
         }}
@@ -67,30 +53,7 @@ export default function VerticalLinearStepper() {
           Checkout
         </Typography>
         {cartItems.length === 0 ? (
-          <Box
-            sx={{
-              maxWidth: 'sm',
-              mx: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Typography variant="h6" align="center" gutterBottom>
-              Your Cart Is Empty
-            </Typography>
-            <Link href="/">
-              <Button
-                color="info"
-                variant="contained"
-                size="small"
-                disableElevation
-              >
-                Back To Shopping
-              </Button>
-            </Link>
-          </Box>
+          <EmptyCart />
         ) : (
           <Stepper activeStep={activeStep} orientation="vertical">
             {steps.map((step, index) => (
@@ -104,7 +67,7 @@ export default function VerticalLinearStepper() {
                 >
                   {step}
                 </StepLabel>
-                <StepContent>{renderComponent(index)}</StepContent>
+                <StepContent>{renderComponent(index, handlers)}</StepContent>
               </Step>
             ))}
           </Stepper>
@@ -112,4 +75,18 @@ export default function VerticalLinearStepper() {
       </Grid>
     </Grid>
   );
+}
+function renderComponent(index, { handleNext, handleBack }) {
+  switch (index) {
+    case 0:
+      return <AddressForm handleNext={handleNext} />;
+    case 1:
+      return <PaymentForm handleNext={handleNext} handleBack={handleBack} />;
+    case 2:
+      return <CartReview handleBack={handleBack} handleNext={handleNext} />;
+    case 3:
+      return <ReviewOrder handleNext={handleNext} handleBack={handleBack} />;
+    default:
+      null;
+  }
 }

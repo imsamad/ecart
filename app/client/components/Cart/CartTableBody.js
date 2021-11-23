@@ -1,7 +1,7 @@
-import { TableBody, TableCell, TableRow } from '@mui/material';
+import { TableBody, TableCell, TableRow } from "@mui/material";
 
-import NextButton from './NextButton';
-import ProductRow from './ProductRow';
+import NextButton from "./NextButton";
+import ProductRow from "./ProductRow";
 
 const CartTableBody = ({
   cartItems,
@@ -44,9 +44,8 @@ const CartTableBody = ({
     </TableBody>
   );
 };
+const hideBelowMd = { display: { xs: "none", sm: "none", md: "table-row" } };
 const TableRowModified = ({ children }) => (
-  <TableRow sx={{ display: { xs: 'none', sm: 'none', md: 'table-row' } }}>
-    {children}
-  </TableRow>
+  <TableRow sx={hideBelowMd}>{children}</TableRow>
 );
 export default CartTableBody;

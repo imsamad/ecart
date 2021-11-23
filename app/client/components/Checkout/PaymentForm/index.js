@@ -6,16 +6,23 @@ import {
   RadioGroup,
   Typography,
   FormControlLabel,
-} from '@mui/material';
-import * as Yup from 'yup';
-import React from 'react';
-import { Box } from '@mui/system';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
+} from "@mui/material";
+import * as Yup from "yup";
+import React from "react";
+import { Box } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
 
-import { addPaymentMethod } from '../../../redux/actions/cartActions';
+import { addPaymentMethod } from "../../../redux/actions/cartActions";
 
-const Pay = ({ handleNext, handleBack }) => {
+const payOptions = [
+  { label: "Pay On Delivery", value: "pod", disabled: true },
+  { label: "Stripe", value: "stripe", disabled: true },
+  { label: "PayPal", value: "payPal", disabled: false },
+  { label: "PayTM", value: "payTm", disabled: true },
+];
+
+const index = ({ handleNext, handleBack }) => {
   const { paymentMethod } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -26,18 +33,18 @@ const Pay = ({ handleNext, handleBack }) => {
   const formik = useFormik({
     initialValues: { payMethod: paymentMethod },
     validationSchema: Yup.object().shape({
-      payMethod: Yup.string('Select your pay method').required(
-        'Payment Method is required'
+      payMethod: Yup.string("Select your pay method").required(
+        "Payment Method is required"
       ),
     }),
     onSubmit: handleSubmit,
   });
   return (
     <Grid container sx={{ p: 2 }}>
-      <Grid xs={12} md={6} sx={{ margin: 'auto' }} item>
+      <Grid xs={12} md={6} sx={{ margin: "auto" }} item>
         <Paper
           elevation={2}
-          sx={{ borderColor: 'grey.500', pt: 2, borderRadius: 4 }}
+          sx={{ borderColor: "grey.500", pt: 2, borderRadius: 4 }}
         >
           <Typography align="center" variant="h6">
             Select a Pay Option
@@ -50,31 +57,17 @@ const Pay = ({ handleNext, handleBack }) => {
                 onChange={formik.handleChange}
                 defaultValue={`${paymentMethod}`}
               >
-                <FormControlLabel
-                  disabled
-                  value="pod"
-                  control={<Radio />}
-                  label="Pay On Delivery"
-                />
-                <FormControlLabel
-                  value="stripe"
-                  control={<Radio />}
-                  disabled
-                  label="Stripe"
-                />
-                <FormControlLabel
-                  value="payTm"
-                  disabled
-                  control={<Radio />}
-                  label="PayTM"
-                />
-                <FormControlLabel
-                  value="payPal"
-                  control={<Radio />}
-                  label="PayPal"
-                />
+                {payOptions.map((option) => (
+                  <FormControlLabel
+                    key={option.value}
+                    disabled={option.disabled}
+                    value={option.value}
+                    control={<Radio />}
+                    label={option.label}
+                  />
+                ))}
               </RadioGroup>
-              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -84,7 +77,7 @@ const Pay = ({ handleNext, handleBack }) => {
                 >
                   Next
                 </Button>
-                <Box sx={{ border: 0, flex: '1 1 auto ' }} />
+                <Box sx={{ border: 0, flex: "1 1 auto " }} />
                 <Button
                   color="error"
                   variant="contained"
@@ -102,4 +95,4 @@ const Pay = ({ handleNext, handleBack }) => {
   );
 };
 
-export default Pay;
+export default index;

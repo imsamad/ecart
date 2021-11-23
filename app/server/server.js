@@ -1,21 +1,22 @@
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
-const colors = require('colors');
-const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet');
-const xss = require('xss-clean');
-const rateLimit = require('express-rate-limit');
-const hpp = require('hpp');
-const cors = require('cors');
-const compression = require('compression');
+require("dotenv").config({ path: "./config/.env" });
+const path = require("path");
+const express = require("express");
+const morgan = require("morgan");
+const colors = require("colors");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const cors = require("cors");
+const compression = require("compression");
 
-const cache = require('./middleware/cache');
-const errorHandler = require('./middleware/error');
-const notFound = require('./middleware/notFound');
+const cache = require("./middleware/cache");
+const errorHandler = require("./middleware/error");
+const notFound = require("./middleware/notFound");
 // const connectDB = require('./config/db');
-const connectDB = require('./config/connectDB');
-const shouldCompress = require('./utils/shouldCompress');
+const connectDB = require("./config/connectDB");
+const shouldCompress = require("./utils/shouldCompress");
 
 const app = express();
 // Compress all responses
@@ -33,7 +34,7 @@ app.use(express.json());
 // app.use(fileupload());
 
 // Dev logging middleware
-if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -61,9 +62,8 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // Caching
-if (process.env.USE_CACHE === 'true') app.use(cache(300));
-
-const combineRouters = require('./routes/combineRtr');
+if (process.env.USE_CACHE === "true") app.use(cache(300));
+const combineRouters = require("./routes");
 app.use(combineRouters);
 app.use(notFound);
 app.use(errorHandler);
@@ -72,12 +72,9 @@ const PORT = process.env.PORT || 5000;
 
 const connectToDBWithRetry = async () => {
   let counter = 5;
-
   try {
-    console.log('Conncet');
     await connectDB();
   } catch (err) {
-    console.log('Counter ', counter);
     if (counter++ < 5) await connectDB();
   }
 };
@@ -92,7 +89,7 @@ let server = app.listen(
 );
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
+process.on("unhandledRejection", (err, promise) => {
   console.log(`Unhandled Rejection :- ${err.messsage}`.red.bold);
   // Close server & exit process
   server.close(() => process.exit(1));

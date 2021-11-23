@@ -1,17 +1,16 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
-import Link from 'next/link';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import { useRouter } from 'next/router';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import React from "react";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Link from "next/link";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/router";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 const index = () => {
   const router = useRouter();
-  const [keyword, setKeyword] = React.useState('');
+  const [keyword, setKeyword] = React.useState("");
   const q = router.query.q;
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -24,17 +23,17 @@ const index = () => {
     <>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'row-reverse',
-          justifyContent: 'space-between',
+          display: "flex",
+          flexDirection: "row-reverse",
+          justifyContent: "space-between",
         }}
       >
         <form onSubmit={handleSubmit}>
           <Box
             sx={{
-              p: '2px 4px',
-              display: 'flex',
-              alignItems: 'center',
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
 
               border: 1,
               borderRadius: 1,
@@ -46,7 +45,7 @@ const index = () => {
               value={keyword}
               onChange={handleChange}
             />
-            <IconButton type="submit" sx={{ p: '2px' }} aria-label="search">
+            <IconButton type="submit" sx={{ p: "2px" }} aria-label="search">
               <SearchIcon />
             </IconButton>
           </Box>
@@ -55,9 +54,9 @@ const index = () => {
         {q && (
           <Link href="/">
             <IconButton
-              sx={{ p: '2px', mr: 1 }}
+              sx={{ p: "2px", mr: 1 }}
               size="large"
-              onClick={() => setKeyword('')}
+              onClick={() => setKeyword("")}
             >
               <ArrowBackIcon />
             </IconButton>

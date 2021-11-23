@@ -1,4 +1,4 @@
-const NodeCache = require('Node-Cache');
+const NodeCache = require("node-cache");
 const version = process.env.VERSION;
 const cache = new NodeCache();
 
@@ -16,15 +16,15 @@ module.exports = (duration) => (req, res, next) => {
   // Not cache parameterised url.
   // if (Object.keys(req.query).length !== 0) return next();
 
-  console.log('cache ');
+  console.log("cache ");
   const key = req.originalUrl;
 
-  if (req.method !== 'GET' || haveUrl(key)) return next();
+  if (req.method !== "GET" || haveUrl(key)) return next();
 
   const cacheResponse = cache.get(key);
 
   if (cacheResponse) {
-    console.log('From cache');
+    console.log("From cache");
     return res.send(cacheResponse);
   } else {
     res.originalSend = res.send;

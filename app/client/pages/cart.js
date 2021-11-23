@@ -1,7 +1,7 @@
-import Cart from '../components/Cart';
+import Cart from "../components/Cart";
 
-const cart = () => {
+const index = () => {
   return <Cart />;
 };
 
-export default cart;
+export default index;

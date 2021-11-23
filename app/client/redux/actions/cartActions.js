@@ -5,10 +5,10 @@ import {
   CART_DEC_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
-} from '../constants/cartConst';
-import fetchJson from '../../lib/fetchJson';
+} from "../constants/cartConst";
+import fetchJson from "../../lib/fetchJson";
 
-const addToLS = (data, identfier = 'cartItems') => {
+const addToLS = (data, identfier = "cartItems") => {
   localStorage.setItem(identfier, JSON.stringify(data));
 };
 
@@ -43,7 +43,7 @@ export const addProduct =
     } else {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`;
       const product = await fetchJson({
-        method: 'GET',
+        method: "GET",
         url,
       });
 
@@ -66,17 +66,16 @@ export const addProduct =
       }
     }
   };
-export const addAddress =
-  (address, handleNext) => async (dispatch, getState) => {
-    dispatch({ type: CART_SAVE_SHIPPING_ADDRESS, payload: address });
-    handleNext();
-    addToLS(getState().cart.shippingAddress, 'shippingAddress');
-  };
+export const addAddress = (address, nextStep) => async (dispatch, getState) => {
+  dispatch({ type: CART_SAVE_SHIPPING_ADDRESS, payload: address });
+  nextStep();
+  addToLS(getState().cart.shippingAddress, "shippingAddress");
+};
 
 export const addPaymentMethod =
   ({ payMethod }, handleNext) =>
   (dispatch, getState) => {
     dispatch({ type: CART_SAVE_PAYMENT_METHOD, payload: payMethod });
-    addToLS(getState().cart.paymentMethod, 'paymentMethod');
+    addToLS(getState().cart.paymentMethod, "paymentMethod");
     handleNext();
   };
