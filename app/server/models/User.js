@@ -1,8 +1,7 @@
-const crypto = require('crypto');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const randomize = require('randomatic');
+const crypto = require("crypto");
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -13,26 +12,27 @@ const UserSchema = new mongoose.Schema(
     //dob
     username: {
       type: String,
-      required: [true, 'Please add a name'],
+      required: [true, "Please add a name"],
+      minlength: [5, "Username's minimum length must be 5."],
     },
     email: {
       type: String,
-      required: [true, 'Please add an email'],
+      required: [true, "Please add an email"],
       unique: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email',
+        "Please add a valid email",
       ],
     },
     role: {
       type: String,
-      enum: ['admin', 'seller', 'customer'],
-      default: 'customer',
+      enum: ["admin", "seller", "customer"],
+      default: "customer",
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
-      minlength: 6,
+      required: [true, "Please add a password"],
+      minlength: [6, "Password's minimum length must be 6."],
       select: false,
     },
     resetPasswordToken: String,
@@ -60,9 +60,18 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+//Set cusstom error on unique e-mail.
+UserSchema.post("save", function (error, doc, next) {
+  if (error.name === "MongoError" && error.code === 11000) {
+    next(new Error("Email is already registered."));
+  } else {
+    next(error);
+  }
+});
+
 // Encrypt password using bcrypt
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     next();
   }
 
@@ -86,13 +95,13 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 // Generate and hash password token
 UserSchema.methods.getResetPasswordToken = function () {
   // Generate token
-  const resetToken = crypto.randomBytes(20).toString('hex');
+  const resetToken = crypto.randomBytes(20).toString("hex");
 
   // Hash token and set to resetPasswordToken field
   this.resetPasswordToken = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(resetToken)
-    .digest('hex');
+    .digest("hex");
 
   // Set expire
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
@@ -103,23 +112,23 @@ UserSchema.methods.getResetPasswordToken = function () {
 // Generate email confirm token
 UserSchema.methods.generateEmailConfirmToken = function (next) {
   // email confirmation token
-  const confirmationToken = crypto.randomBytes(20).toString('hex');
+  const confirmationToken = crypto.randomBytes(20).toString("hex");
 
   this.confirmEmailToken = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(confirmationToken)
-    .digest('hex');
+    .digest("hex");
 
-  const confirmTokenExtend = crypto.randomBytes(100).toString('hex');
+  const confirmTokenExtend = crypto.randomBytes(100).toString("hex");
   const confirmTokenCombined = `${confirmationToken}.${confirmTokenExtend}`;
   return confirmTokenCombined;
 };
 
-UserSchema.virtual('addresses', {
-  ref: 'Address',
-  localField: '_id',
-  foreignField: 'user',
+UserSchema.virtual("addresses", {
+  ref: "Address",
+  localField: "_id",
+  foreignField: "user",
   justOne: true,
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

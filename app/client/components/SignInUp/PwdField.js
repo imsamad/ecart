@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   IconButton,
   InputLabel,
@@ -8,20 +8,27 @@ import {
   Input,
   FilledInput,
   OutlinedInput,
-} from '@mui/material';
+} from "@mui/material";
 
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const GetInput = (props) => {
   const { variant, ...rest } = props;
-  if (variant === 'outlined') {
+  if (variant === "outlined") {
     return <OutlinedInput {...rest} />;
-  } else if (variant === 'filled') {
+  } else if (variant === "filled") {
     return <FilledInput {...rest} />;
   } else return <Input {...rest} />;
 };
 
-const PasswordField = ({ formik, identifier, label, variant, size }) => {
+const PasswordField = ({
+  formik,
+  identifier,
+  label,
+  variant,
+  size,
+  noLabelMargin,
+}) => {
   const [showPassword, setShowPasword] = React.useState(false);
   const isError =
     formik.touched[identifier] && Boolean(formik.errors[identifier]);
@@ -31,16 +38,20 @@ const PasswordField = ({ formik, identifier, label, variant, size }) => {
       fullWidth
       error={isError}
       margin="normal"
-      size={size ? size : 'medium'}
+      size={size ? size : "medium"}
     >
-      <InputLabel htmlFor={variant} error={isError}>
-        {label ? label : 'Password'}
+      <InputLabel
+        htmlFor={variant}
+        error={isError}
+        sx={{ ml: !noLabelMargin && -2 }}
+      >
+        {label ? label : "Password *"}
       </InputLabel>
       <GetInput
-        variant={variant ? variant : 'standard'}
+        variant={variant ? variant : "standard"}
         name={identifier}
         id={identifier}
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         value={formik.values[identifier]}
         onChange={formik.handleChange}
         endAdornment={

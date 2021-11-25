@@ -1,28 +1,18 @@
-import React, { useState } from 'react';
-import {
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Box,
-  Paper,
-  TextField,
-  DialogContentText,
-  LinearProgress,
-  Alert,
-  Link as MuiLink,
-} from '@mui/material';
-import * as Yup from 'yup';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
-import { useFormik } from 'formik';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import fetchJson from '../lib/fetchJson';
-import PwdField from '../components/SignInUp/PwdField';
+import React, { useState } from "react";
+import { Box, Paper, Alert, Link as MuiLink, Typography } from "@mui/material";
+import * as Yup from "yup";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SendIcon from "@mui/icons-material/Send";
+import { useFormik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import fetchJson from "../lib/fetchJson";
+import PwdField from "../components/SignInUp/PwdField";
+import { passwordValidation } from "../components/SignInUp/SignInUpFormModel";
 const api = process.env.NEXT_PUBLIC_API_URL;
-
+import FormProgress from "../components/FormProgress";
 const axiosObj = (token, data) => ({
-  method: 'PUT',
+  method: "PUT",
   url: `${api}/auth/resetpassword/${token}`,
   data: data,
 });
@@ -33,35 +23,30 @@ export default function LoginForm() {
   const { token } = router.query;
   const formik = useFormik({
     initialValues: {
-      password: '',
+      password: "",
     },
     validationSchema: Yup.object().shape({
-      password: Yup.string('Enter your password')
-        .min(8, 'Password should be of minimum 8 characters length')
-        .test(
-          'password',
-          'Password should be of minimum 8 characters length',
-          (value) => {
-            const len = value?.trim().split(' ').join('').length;
-            return len >= 8 ? true : false;
-          }
-        )
-        .required('Password is required'),
+      password: passwordValidation,
     }),
     onSubmit: async (value, action) => {
       try {
-        const { data } = await fetchJson(axiosObj(token, value));
-        if (data) {
-          router.replace('/login');
+        const fetchData = await fetchJson(axiosObj(token, value));
+        const { success } = fetchData;
+        if (success) {
+          router.replace("/login");
         }
       } catch (err) {
-        if (err.message.indexOf('Invalid') > -1) {
-          return router.replace('/login');
+        if (err.message.indexOf("Invalid") > -1) {
+          setHeadMeg({
+            error: true,
+            msg: "Invalid info!",
+          });
+        } else {
+          setHeadMeg({
+            error: true,
+            msg: "Unable to submit,plz try again",
+          });
         }
-        setHeadMeg({
-          error: true,
-          msg: 'Unable to submit,plz try again',
-        });
         action.setSubmitting(false);
       }
     },
@@ -75,58 +60,63 @@ export default function LoginForm() {
     <Paper
       elevation={3}
       sx={{
-        maxWidth: 'sm',
-        mx: 'auto',
-        overflow: 'hidden',
-        position: 'relative',
+        maxWidth: "sm",
+        mx: "auto",
+        overflow: "hidden",
+        position: "relative",
       }}
     >
-      {formik.isSubmitting && <LinearProgress />}
-      <DialogTitle sx={{ textAlign: 'center' }}>Reset Password</DialogTitle>
+      {" "}
+      <FormProgress isTrue={formik.isSubmitting} />
+      <Box
+        sx={{
+          overflow: "hidden",
+          position: "relative",
+          p: 3,
+        }}
+      >
+        <Typography variant="h6" align="center" sx={{ my: 1 }}>
+          Reset Password
+        </Typography>
+        {headMsg && (
+          <Alert severity="error" sx={{ mx: 4 }}>
+            {headMsg.msg}
+          </Alert>
+        )}
+        <PwdField formik={formik} identifier="password" label="New Password" />
 
-      {headMsg && (
-        <Alert severity="error" sx={{ mx: 4 }}>
-          {headMsg.msg}
-        </Alert>
-      )}
+        <Link href="/login">
+          <MuiLink sx={{ mr: 2 }} underline="hover" component="button">
+            Login
+          </MuiLink>
+        </Link>
+        <Link href="/login">
+          <MuiLink underline="hover" component="button">
+            Register
+          </MuiLink>
+        </Link>
 
-      <DialogContent>
-        <Box sx={{ m: 1 }} noValidate>
-          <form>
-            <PwdField
-              formik={formik}
-              identifier="password"
-              label="New Password"
-            />
-          </form>
-        </Box>
-        <DialogContentText sx={{ mt: 4 }}>
-          <Link href="/login">
-            <MuiLink sx={{ mx: 2 }} underline="hover" component="button">
-              Login
-            </MuiLink>
-          </Link>
-          <Link href="/login">
-            <MuiLink sx={{ mx: 2 }} underline="hover" component="button">
-              Register
-            </MuiLink>
-          </Link>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions sx={{ pr: 4, pb: 4 }}>
-        <LoadingButton
-          disableElevation
-          disabled={formik.isSubmitting}
-          loading={formik.isSubmitting}
-          loadingPosition="start"
-          startIcon={<SendIcon />}
-          onClick={formik.handleSubmit}
-          variant="contained"
-          color="secondary"
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-start",
+          }}
         >
-          Reset
-        </LoadingButton>
-      </DialogActions>
+          <LoadingButton
+            disableElevation
+            disabled={formik.isSubmitting}
+            loading={formik.isSubmitting}
+            loadingPosition="start"
+            startIcon={<SendIcon />}
+            onClick={formik.handleSubmit}
+            variant="contained"
+            color="secondary"
+          >
+            Reset
+          </LoadingButton>
+        </Box>
+      </Box>
     </Paper>
   );
 }

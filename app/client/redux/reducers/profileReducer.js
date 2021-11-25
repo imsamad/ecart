@@ -3,7 +3,7 @@ import {
   PROFILE_SUCC,
   PROFILE_REQ,
   PROFILE_ERR,
-} from '../constants/profileConst';
+} from "../constants/profileConst";
 
 const profileReducer = (state = { user: {} }, action) => {
   const { type, payload } = action;
@@ -17,7 +17,7 @@ const profileReducer = (state = { user: {} }, action) => {
         ...state,
         loading: false,
         user: payload.user,
-        emailUpdated: payload.emailUpdated,
+        profileUpdateMsg: payload.profileUpdateMsg,
       };
     case PROFILE_ERR:
       return { ...state, loading: false, error: true, errMsg: payload };
