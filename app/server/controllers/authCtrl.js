@@ -180,7 +180,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   if (!(await user.matchPassword(req.body.currentPassword))) {
     return next(new ErrorResponse("Password is incorrect", 401));
   }
-
+  if (req.body.newPassword.length < 6) {
+    return next(new ErrorResponse("Password's minimum length must be 6.", 401));
+  }
   user.password = req.body.newPassword;
   await user.save();
 
