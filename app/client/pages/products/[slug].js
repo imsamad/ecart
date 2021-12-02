@@ -1,14 +1,15 @@
-import React from 'react';
-import Image from 'next/image';
-import { Typography, Grid } from '@mui/material';
-import { useRouter } from 'next/router';
-import fetchJson from '../../lib/fetchJson';
-
+import React from "react";
+import Image from "next/image";
+import { Typography, Grid } from "@mui/material";
+import { useRouter } from "next/router";
+import fetchJson from "../../lib/fetchJson";
+import AddToCartBtn from "../../components/AddToCartBtn";
+import { Box } from "@mui/system";
 const index = ({ emptyProduct, product }) => {
   const router = useRouter();
 
   if (router.isFallback) {
-    return 'Loading...';
+    return "Loading...";
   }
   if (product) {
     return (
@@ -26,6 +27,10 @@ const index = ({ emptyProduct, product }) => {
           <Typography variant="subtitle1" gutterBottom>
             {product.brand}
           </Typography>
+
+          <Box sx={{ my: 1 }}>
+            <AddToCartBtn product={product._id.toString()} buy={true} />
+          </Box>
           <Typography variant="h4" gutterBottom>
             ${product.price}
           </Typography>
@@ -36,7 +41,7 @@ const index = ({ emptyProduct, product }) => {
       </Grid>
     );
   } else {
-    return 'No product exist. with this identifier...';
+    return "No product exist. with this identifier...";
   }
 };
 export const getStaticPaths = async () => {
@@ -79,7 +84,7 @@ export async function getStaticProps(ctx) {
   } catch (err) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       }, //Redirecting at build-time is currently not allowed and if the redirects are known at build-time they should be added in next.config.js.
     };

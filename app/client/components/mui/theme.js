@@ -1,10 +1,10 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 // Create a theme instance.
 const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      // mxs: 300, //mid of xs+xm
+      mxs: 300, //mid of xs+xm
       sm: 600,
       md: 900,
       lg: 1200,
