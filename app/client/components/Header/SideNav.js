@@ -15,6 +15,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LoginIcon from "@mui/icons-material/Login";
 
 export default function SideBarNav({ open, toggleDrawer, user, logout }) {
+  // console.log(object)
   const lisItems =
     user && user?.email
       ? [
