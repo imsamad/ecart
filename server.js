@@ -1,7 +1,6 @@
 require("dotenv").config({ path: "./config/.env" });
 const path = require("path");
 const express = require("express");
-const morgan = require("morgan");
 const colors = require("colors");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
@@ -36,7 +35,7 @@ app.use(express.static("public"));
 // app.use(fileupload());
 
 // Dev logging middleware
-if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
+if (process.env.NODE_ENV === "development") app.use(require("morgan")("dev"));
 
 // Sanitize data
 app.use(mongoSanitize());
