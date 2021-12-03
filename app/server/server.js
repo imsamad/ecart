@@ -25,6 +25,8 @@ app.use(compression({ filter: shouldCompress }));
 // Body parser
 app.use(express.json());
 
+app.use(express.static("public"));
+
 // Cookie parser
 // const cookieParser = require('cookie-parser');
 // app.use(cookieParser());

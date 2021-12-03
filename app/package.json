@@ -6,12 +6,8 @@
   "scripts": {
     "config": "cd client && cp .env.example .env && cd ../server/config && cp .env.example .env",
     "bootup": "npm i && cd server && npm i && cd ../client && npm i",
-    "server-dev": "cd server && npm run dev ",
-    "client-dev": "cd client  && npm run dev",
-    "dev": "concurrently -n 'server,client' -c 'green,blue' \"npm run server-dev\" \"npm run client-dev\"",
-    "server": "cd server &&  npm start",
-    "client": "cd client &&  npm run build && npm start",
-    "start": "concurrently -n 'server,client' -c 'green,blue'  \"npm run server\" \"npm run client\"",
+    "dev": "concurrently -n 'server,client' -c 'green,blue' \" cd server && npm run dev \" \" cd client  && npm run dev\"",
+    "start": "concurrently -n 'server,client' -c 'green,blue'  \"cd server &&  npm start\" \"cd client &&  npm run build && npm start\"",
     "seed:i": "cd server && npm run seed:i",
     "seed:d": "cd server && npm run seed:d"
   },

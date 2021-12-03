@@ -4,8 +4,6 @@
   "description": "E-Cart backend API",
   "main": "server.js",
   "scripts": {
-    "start-p": "node -r dotenv/config server dotenv_config_path=./config/.env",
-    "dev-p": "nodemon -r dotenv/config -L server  dotenv_config_path=./config/.env",
     "start": "node server",
     "dev": "nodemon server",
     "seed:i": "cd _data && node seeder.js -i",

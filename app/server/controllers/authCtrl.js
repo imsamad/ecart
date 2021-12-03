@@ -166,7 +166,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   }
 
   resMsg = { ...resMsg, profileIsDiff, emailIsDiff };
-
   sendTokenResponse(user, 200, res, resMsg);
 });
 
