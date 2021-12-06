@@ -1,0 +1,20 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "config": "cd ../client && cp .env.example .env && cd ../server/config && cp .env.example .env",
+    "bootup": "npm i && cd ../server && npm i && cd ../client && npm i",
+    "dev": "concurrently -n 'server,client' -c 'green,blue' \" cd ../server && npm run dev \" \" cd ../client  && npm run dev\"",
+    "start": "concurrently -n 'server,client' -c 'green,blue'  \"cd server &&  npm start\" \"cd client &&  npm run build && npm start\"",
+    "seed:i": "cd ../server && npm run seed:i",
+    "seed:d": "cd ../server && npm run seed:d"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  }
+}
