@@ -7,6 +7,7 @@ const PaypalBtn = dynamic(() => import("../PaypalBtn"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
+
 import { payOrder } from "../../redux/actions/orderPayActions";
 
 const PayButton = () => {
@@ -21,7 +22,6 @@ const PayButton = () => {
   const onSuccess = (payResult) => {
     dispatch(payOrder(orderId, payResult));
   };
-  console.log("PaypalBtnPaypalBtn", PaypalBtn);
   return orderPay.isPaid || isPaid ? (
     <>
       <TableCell>Pay Status</TableCell>
