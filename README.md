@@ -18,33 +18,40 @@
   - Change Profile
   - Forgot/Reset Password
   - Product Search
+  - Checkout page
 - Backend
   - Compressed
   - Added Headers for security(Helmet)
   - Protect against http param polution
   - Use cors to make API public
+  - Add a rate limit for requests
+  - Compress & Cache response data
 
 ### How to use
-
+If mongo is installed on machine
+```bash
+git clone https://github.com/imsamad/ecart && cd combine && npm run bootup && npm run config && npm run seed:i && npm run dev
+```
+<p align="center">OR</p>
+What above cmds are :-
 ---
 
 1. Clone repo
 
-```sh
+```bash
 git clone https://github.com/imsamad/ecart
-git checkout dev
 ```
 
 2. Install packages
 
-```sh
+```bash
 cd combine
 npm run bootup
 ```
 
 3. Rename env files
 
-```sh
+```bash
 npm run config
 ```
 
@@ -81,9 +88,6 @@ PAYPAL_CLIENT_ID=
 
 ## Todos
 
-- [ ] Dockerise
+- [ ] Dockerise(DevOps-ify)
 - [ ] Serve Image from third-party.
-- [ ] Mention deploy strategies
-- [ ] Define file structure
-- [ ] Add PayPal payment guide
-- [ ] Add Objective of app
+- [ ] Mention deploy strategies  
