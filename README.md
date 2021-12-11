@@ -28,30 +28,32 @@
   - Compress & Cache response data
 
 ### How to use
-If mongo is installed on machine
+If mongo is installed on machine , copy & paste this on terminal ,it will spin up dev server
 ```bash
-git clone https://github.com/imsamad/ecart && cd combine && npm run bootup && npm run config && npm run seed:i && npm run dev
+git clone https://github.com/imsamad/ecart && cd ecart/combine && npm run bootup && npm run config && npm run seed:d && npm run seed:i && npm run dev
 ```
 <p align="center">OR</p>
-What above cmds are :-
 ---
+
+##### What above cmds are :-
+
 
 1. Clone repo
 
-```bash
+```sh
 git clone https://github.com/imsamad/ecart
 ```
 
 2. Install packages
 
-```bash
+```sh
 cd combine
 npm run bootup
 ```
 
 3. Rename env files
 
-```bash
+```sh
 npm run config
 ```
 
