@@ -37,6 +37,7 @@ const index = ({ handleNext, handleBack, fromReview }) => {
           disabled={loading}
           variant="contained"
           color="secondary"
+          size="small"
           onClick={handleClick}
           sx={{ mt: 1, mr: 1 }}
         >
@@ -45,6 +46,7 @@ const index = ({ handleNext, handleBack, fromReview }) => {
         <Button
           disabled={loading}
           color="error"
+          size="small"
           variant="contained"
           onClick={handleBack}
           sx={{ mt: 1, mr: 1 }}

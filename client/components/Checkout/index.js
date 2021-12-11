@@ -55,7 +55,7 @@ export default function index() {
         {cartItems.length === 0 ? (
           <EmptyCart />
         ) : (
-          <Stepper activeStep={activeStep} orientation="vertical">
+          <Stepper activeStep={activeStep} orientation="vertical" sx={{p:0}}>
             {steps.map((step, index) => (
               <Step key={step}>
                 <StepLabel

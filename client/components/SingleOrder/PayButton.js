@@ -21,7 +21,7 @@ const PayButton = () => {
 
   const onSuccess = (payResult) => {
     dispatch(payOrder(orderId, payResult));
-  };
+  }; 
   return orderPay.isPaid || isPaid ? (
     <>
       <TableCell>Pay Status</TableCell>

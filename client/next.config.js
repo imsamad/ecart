@@ -7,4 +7,16 @@ module.exports = withPwa({
     skipWaiting: true,
     disable: process.env.NODE_ENV === 'development',
   },
-});
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },   {
+        source: '/index',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },},);

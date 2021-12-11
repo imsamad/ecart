@@ -13,7 +13,15 @@ const paymentMethodFromStorage =
 const shippingAddressFromStorage =
   isNotServer && localStorage.getItem("shippingAddress")
     ? JSON.parse(localStorage.getItem("shippingAddress"))
-    : {};
+    : {
+      fullName:"AbdusSamad",
+      mobileNo:'+91-9870645161',
+      pinCode:'090909',
+      city:'MyCity',
+      landmark:"Near New Palaza",
+      state:"UK",
+      country:"India",
+    };
 
 const initialState = {
   cartItems: cartItemFromStorage,

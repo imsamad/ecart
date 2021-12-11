@@ -37,9 +37,8 @@ function MyApp({ onSuccess, totalPrice, orderId }) {
   };
 
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-
-  return (
-    <PayPalScriptProvider options={{ 'client-id': clientId }}>
+  console.log("clientId",clientId)
+  return !clientId ?<h4>Set PAYPAL_CLIENT_ID<br/> to enable PayPal.</h4>:<PayPalScriptProvider options={{ 'client-id': clientId }} >
       <PayPalButtons
         style={{
           color: 'blue',
@@ -54,7 +53,7 @@ function MyApp({ onSuccess, totalPrice, orderId }) {
         onError={onError}
       />
     </PayPalScriptProvider>
-  );
+  
 }
 
 export default MyApp;

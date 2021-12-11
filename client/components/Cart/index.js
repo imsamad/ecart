@@ -20,7 +20,7 @@ const index = ({ fromCheckoutPage }) => {
   return cartItems.length === 0 ? (
     <EmptyCart />
   ) : (
-    <Box sx={{ border: 1, borderRadius: 4, p: 1 }}>
+    <Box sx={{ border: 1, borderRadius: 4, }}>
       <TableContainer>
         <Table sx={{ minWidth: "500px" }}>
           <CartTableHead />

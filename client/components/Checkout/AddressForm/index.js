@@ -37,7 +37,7 @@ const index = ({ handleNext }) => {
           mt: 4,
         }}
       >
-        <Paper sx={{ p: 2, borderRadius: 4, borderColor: "grey.500" }}>
+        <Paper sx={{ p: 1, borderRadius: 4, borderColor: "grey.500" }}>
           <Typography align="center" variant="h6">
             Shipping address
           </Typography>
@@ -67,6 +67,7 @@ const index = ({ handleNext }) => {
               variant="contained"
               color="secondary"
               type="submit"
+              size="small"
               onClick={formik.handleSubmit}
             >
               Next

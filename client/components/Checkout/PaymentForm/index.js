@@ -40,7 +40,7 @@ const index = ({ handleNext, handleBack }) => {
     onSubmit: handleSubmit,
   });
   return (
-    <Grid container sx={{ p: 2 }}>
+    <Grid container sx={{ p: 0, }}>
       <Grid xs={12} md={6} sx={{ margin: "auto" }} item>
         <Paper
           elevation={2}
@@ -70,9 +70,11 @@ const index = ({ handleNext, handleBack }) => {
               <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Button
                   variant="contained"
+                  size="small"
                   color="secondary"
                   fullWidth={false}
                   type="submit"
+                  sx={{mr:2}}
                   onClick={formik.handleSubmit}
                 >
                   Next
@@ -81,6 +83,7 @@ const index = ({ handleNext, handleBack }) => {
                 <Button
                   color="error"
                   variant="contained"
+                  size="small"
                   onClick={handleBack}
                   sx={{ mr: 1 }}
                 >

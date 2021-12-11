@@ -4,9 +4,9 @@
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "ecart",
+  "name": "e-CartN",
   "description": "E-commerce site",
-  "short_name": "ecart",
+  "short_name": "e-CartSN",
   "icons": [
     {
       "src": "/icon-192x192.png",
